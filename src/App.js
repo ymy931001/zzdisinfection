@@ -9,7 +9,7 @@ import {
   ConfigProvider
 } from "antd";
 import { Route, Switch, Link } from 'react-router-dom';
-import { BankOutlined, RobotOutlined, PushpinOutlined, CloudOutlined } from '@ant-design/icons';
+import { BankOutlined, RobotOutlined, PushpinOutlined } from '@ant-design/icons';
 import {
   getsysmenu,
 } from "./axios";
@@ -371,7 +371,7 @@ class App extends Component {
 
 
 
-                <SubMenu
+                {/* <SubMenu
                   key="sub11"
                   title={
                     <span>
@@ -399,7 +399,7 @@ class App extends Component {
                       <span>二维码管理</span>
                     </Link>
                   </Menu.Item>
-                </SubMenu>
+                </SubMenu> */}
               </Menu>
             </Sider>
 
