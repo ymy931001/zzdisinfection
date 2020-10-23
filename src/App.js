@@ -33,15 +33,10 @@ import areastatistics from "./areastatistics/areastatistics";
 import cleaner from "./cleaner/cleaner";
 import houseroom from "./houseroom/houseroom";
 import addroom from "./addroom/addroom";
-// import temperaturepc from "./temperaturepc/temperaturepc";
-// import tempstatistics from "./tempstatistics/tempstatistics";
 import cuplistpc from "./cuplistpc/cuplistpc";
 import monthstatistics from "./monthstatistics/monthstatistics";
-// import hospitalvideo from "./hospitalvideo/hospitalvideo";
 import hotelvideo from "./hotelvideo/hotelvideo";
 import cinemavideo from "./cinemavideo/cinemavideo";
-// import hospitaldisvideo from "./hospitaldisvideo/hospitaldisvideo";
-// import publicplace from "./publicplace/publicplace";
 import hotelplace from "./hotelplace/hotelplace";
 import scene from "./scene/scene";
 import role from "./role/role";
@@ -53,7 +48,6 @@ import addargs from "./addargs/addargs";
 import guestroomvideo from "./guestroomvideo/guestroomvideo";
 import housereport from "./housereport/housereport";
 import examine from "./examine/examine";
-import platform from "./platform/platform";
 import interfaces from "./interfaces/interfaces";
 import housereportdetail from "./housereportdetail/housereportdetail";
 import erweima from "./erweima/erweima";
@@ -298,54 +292,8 @@ class App extends Component {
                   }
                   style={{ display: this.state.usertypenone }}
                 >
-                  {/* <Menu.Item key="27" style={{ display: this.state.lsdis }}>
-                    <Link to="/app/hospitalvideo">
-                      <span>医废管理</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="30" style={{ display: this.state.lsdis }}>
-                    <Link to="/app/video_data" >
-                      <span>分诊监控</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="31">
-                    <Link to="/app/hotelvideo">
-                      <span>酒店消毒</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="32" style={{ display: this.state.lsdis }}>
-                    <Link to="/app/cinemavideo" >
-                      <span>影院消毒</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="33" style={{ display: this.state.lsdis }}>
-                    <Link to="/app/hospitaldisvideo"  >
-                      <span>医院消毒</span>
-                    </Link>
-                  </Menu.Item> */}
                   {powers2}
                 </SubMenu>
-                {/* <SubMenu
-                  key="sub7"
-                  style={{ display: this.state.usertypenone }}
-                  title={
-                    <span>
-                      <Icon type="file-exclamation" />
-                      <span>体温管理</span>
-                    </span>
-                  }
-                >
-                  <Menu.Item key="19">
-                    <Link to="/app/temperaturepc">
-                      <span>体温管理</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="21">
-                    <Link to="/app/tempstatistics" >
-                      <span>信息统计</span>
-                    </Link>
-                  </Menu.Item>
-                </SubMenu> */}
 
 
 
@@ -367,68 +315,13 @@ class App extends Component {
                   style={{ display: this.state.usertypenone }}
                 >
                   {powers3}
-                  {/* <Menu.Item key="6">
-                    <Link to="/app/hotel">
-                      <span>单位管理</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="15">
-                    <Link to="/app/houseroom">
-                      <span>房间管理</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="18" style={{ display: this.state.lsdis }}>
-                    <Link to="/app/scene">
-                      <span>场景管理</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="19" style={{ display: this.state.lsdis }}>
-                    <Link to="/app/parmer">
-                      <span>参数管理</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="16" style={{ display: this.state.lsdis }}>
-                    <Link to="/app/cleaner">
-                      <span>保洁员管理</span>
-                    </Link>
-                  </Menu.Item> */}
-                  {/* <Menu.Item key="17">
-                    <Link to="/app/hospital">
-                      <span>医院管理</span>
-                    </Link>
-                  </Menu.Item> */}
+                
                 </SubMenu>
 
 
 
                 {powers6}
-                {/* <Menu.Item key="39" style={{ display: this.state.lsdis }}
-                >
-
-                  <Link to="/app/cuplistpc">
-                    <BankOutlined />
-                    <span>酒店管理</span>
-                  </Link>
-                </Menu.Item> */}
-
-
-                {/* <SubMenu
-                  key="sub4"
-                  style={{ display: this.state.usertypenone }}
-                  title={
-                    <span>
-                  
-                      <span>数据统计</span>
-                    </span>
-                  }
-                >
-                
-                  <Menu.Item key="14">
-                    <Link to="/app/sitestatistics" >
-                      <span>酒店统计</span>
-                    </Link>
-                  </Menu.Item>
-                </SubMenu> */}
+              
 
 
 
@@ -443,34 +336,13 @@ class App extends Component {
                   style={{ display: this.state.usertypenone }}
                 >
                   {powers4}
-                  {/* <Menu.Item key="3" >
-                    <Link to="/app/equipment" >
-                      <span>摄像头</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="5">
-                    <Link to="/app/socket">
-                      <span>插座</span>
-                    </Link>
-                  </Menu.Item> */}
+                 
                 </SubMenu>
 
 
 
 
-                {/* <Menu.Item key="6">
-                  <Link to="/app/hotel">
-                    <Icon type="home" />
-                    <span>酒店管理</span>
-                  </Link>
-                </Menu.Item> */}
-                {/* 
-                <Menu.Item key="13" style={{ display: this.state.lsdis }} >
-                  <Link to="/app/areastatistics" >
-                    <Icon type="bar-chart" />
-                    <span>区域统计</span>
-                  </Link>
-                </Menu.Item> */}
+              
 
 
 
@@ -494,24 +366,7 @@ class App extends Component {
                   style={{ display: this.state.lsdis }}
                 >
                   {powers5}
-                  {/* <Menu.Item key="7"
-                  >
-                    <Link to="/app/user">
-                      <span>用户管理</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="11"
-                  >
-                    <Link to="/app/role">
-                      <span>角色管理</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="12"
-                  >
-                    <Link to="/app/power">
-                      <span>权限管理</span>
-                    </Link>
-                  </Menu.Item> */}
+               
                 </SubMenu>
 
 
@@ -544,39 +399,7 @@ class App extends Component {
                       <span>二维码管理</span>
                     </Link>
                   </Menu.Item>
-
                 </SubMenu>
-
-
-                {/* <Menu.Item key="9">
-                  <Link to="/app/blockchain">
-                    <Icon type="link" />
-                    <span>区块信息</span>
-                  </Link>
-                </Menu.Item> */}
-
-                {/* <SubMenu
-                  key="sub3"
-                  style={{ display: this.state.disnone }}
-                  title={
-                    <span>
-                      <Icon type="laptop" />
-                      <span>运维监控</span>
-                    </span>
-                  }
-                >
-                  <Menu.Item key="18">
-                    <Link to="/app/video_datas">
-                      <span>测试信息</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="11">
-                    <a href="http://disinfection.terabits.cn:9000" target="_blank">控制台</a>
-                  </Menu.Item>
-                  <Menu.Item key="12">
-                    <a href="http://disinfection.terabits.cn:9090/druid" target="_blank">sql统计</a>
-                  </Menu.Item>
-                </SubMenu> */}
               </Menu>
             </Sider>
 
@@ -602,15 +425,10 @@ class App extends Component {
                   <Route path="/app/cleaner" component={cleaner} />
                   <Route path="/app/houseroom" component={houseroom} />
                   <Route path="/app/addroom" component={addroom} />
-                  {/* <Route path="/app/temperaturepc" component={temperaturepc} />
-                  <Route path="/app/tempstatistics" component={tempstatistics} /> */}
                   <Route path="/app/cuplistpc" component={cuplistpc} />
                   <Route path="/app/monthstatistics" component={monthstatistics} />
-                  {/* <Route path="/app/hospitalvideo" component={hospitalvideo} /> */}
                   <Route path="/app/hotelvideo" component={hotelvideo} />
                   <Route path="/app/cinemavideo" component={cinemavideo} />
-                  {/* <Route path="/app/hospitaldisvideo" component={hospitaldisvideo} /> */}
-                  {/* <Route path="/app/publicplace" component={publicplace} /> */}
                   <Route path="/app/hotelplace" component={hotelplace} />
                   <Route path="/app/scene" component={scene} />
                   <Route path="/app/role" component={role} />
@@ -622,7 +440,6 @@ class App extends Component {
                   <Route path="/app/guestroomvideo" component={guestroomvideo} />
                   <Route path="/app/housereport" component={housereport} />
                   <Route path="/app/examine" component={examine} />
-                  <Route path="/app/platform" component={platform} />
                   <Route path="/app/interfaces" component={interfaces} />
                   <Route path="/app/housereportdetail" component={housereportdetail} />
                   <Route path="/app/erweima" component={erweima} />
