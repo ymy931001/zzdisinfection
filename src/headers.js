@@ -99,7 +99,7 @@ class Headers extends Component {
                     color: 'white', fontSize: "25px", borderRadius: '5px',
                     marginLeft: "1%", marginRight: '10px', marginTop: "6px", display: 'flex', alignItems: 'center'
                 }}>
-                    <img src={require('./logo666.png')} alt="" style={{ marginRight: '20px' }} /> 浙江省住宿场所消毒保洁智能监管平台
+                    <img src={require('./logo666.png')} alt="" style={{ marginRight: '20px' }} /> 郑州市住宿场所消毒保洁智能监管平台
                 </div>
                 <div style={{ marginRight: "20px", float: 'right', height: '64px', display: 'flex', alignItems: 'center', fontSize: '14px' }}>
                     <div style={{ textAlign: 'right' }}>
@@ -107,7 +107,9 @@ class Headers extends Component {
                         <Avatar icon="user" style={{ marginRight: '10px', marginBottom: '10px' }} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                         <span style={{ marginRight: '10px' }}>
                             {/* <Icon type="user" style={{ marginRight: '5px' }} /> */}
-                            {localStorage.getItem("userID")}
+                            {/* {localStorage.getItem("userID")}
+                             */}
+                             郑州市卫生监督所
                         </span>
                     </div>
                     <div style={{ height: "32px", lineHeight: "32px", textAlign: 'right' }}>
