@@ -27,6 +27,33 @@ class App extends React.Component {
     this.state = {
       begintime: undefined,
       endtime: undefined,
+      cuplist: [{
+        checkoutCount: 18,
+        cleanerId: 13,
+        cleanerName: "包建凤",
+        date: "2020-10-26 00:00:00",
+        detail: [{ "count": 38, "id": 1, "name": "茶杯" }, { "count": 38, "id": 2, "name": "漱口杯" }, { "count": 38, "id": 3, "name": "水杯" }, { "count": 32, "id": 4, "name": "咖啡杯" }],
+        detectionId: 2480,
+        gmtcreate: "2020-10-26 15:52:07",
+        id: 2094,
+        roomId: 25,
+        roomName: "主9F消毒间",
+        siteId: 1,
+        siteName: "郑州大酒店",
+      }, {
+        checkoutCount: 30,
+        cleanerId: 16,
+        cleanerName: "张影",
+        date: "2020-10-25 00:00:00",
+        detail: [{ "count": 61, "id": 1, "name": "茶杯" }, { "count": 60, "id": 2, "name": "漱口杯" }, { "count": 60, "id": 3, "name": "水杯" }, { "count": 60, "id": 4, "name": "咖啡杯" }, { "count": 10, "id": 11, "name": "其他杯" }],
+        detectionId: 2432,
+        gmtcreate: "2020-10-25 16:26:09",
+        id: 2092,
+        roomId: 3,
+        roomName: "主15F消毒间",
+        siteId: 1,
+        siteName: "郑州大酒店",
+      }]
     };
     this.cupcolumns = [
       {
@@ -98,30 +125,6 @@ class App extends React.Component {
         sorter: (a, b) => new Date(a.gmtcreate) > new Date(b.gmtcreate) ? 1 : -1,
         defaultSortOrder: "descend"
       }
-
-
-      // {
-      //   title: "负责人说明",
-      //   dataIndex: "cupRecord.remark",
-      //   render: (text, record, index) => {
-      //     if (text === null || text === "" || text === undefined) {
-      //       return (
-      //         <div>
-      //           <a
-      //             onClick={() => this.explain(text, record, index)}
-      //           >添加</a>
-
-      //         </div>
-      //       )
-      //     } else {
-      //       return (
-      //         <div style={{ color: "red" }}>
-      //           {text}
-      //         </div>
-      //       )
-      //     }
-      //   }
-      // }
     ];
 
     this.cabinetcolumns = [
@@ -150,34 +153,7 @@ class App extends React.Component {
   componentWillMount() {
     document.title = "杯具清洗记录";
 
-    getcup([
 
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          cuplist: res.data.data
-        });
-      }
-    });
-
-    getregion().then(res => {
-      if (res.data && res.data.message === "success") {
-        console.log(res.data.data[0].children[0].children[0].children[0].children.length)
-        for (var i in res.data.data[0].children) {
-          for (var j in res.data.data[0].children[i].children) {
-            for (var k in res.data.data[0].children[i].children[j].children) {
-              if (res.data.data[0].children[i].children[j].children[k].children.length === 0) {
-                res.data.data[0].children[i].children[j].children[k].adcode = res.data.data[0].children[i].children[j].children[k].id
-                res.data.data[0].children[i].children[j].children[k].children = undefined
-              }
-            }
-          }
-        }
-        this.setState({
-          deviceList: res.data.data[0].children
-        })
-      }
-    });
 
   }
 
@@ -187,7 +163,7 @@ class App extends React.Component {
   //打开清洗记录详情
   detillist = (text, record, index) => {
     this.setState({
-      cabinetlist: JSON.parse(record.detail),
+      cabinetlist: record.detail,
       visible: true,
     }, function () {
       if (this.state.cabinetlist.length < 10) {
@@ -249,32 +225,7 @@ class App extends React.Component {
       });
     }
   }
-  // //添加负责人说明
-  // explainok = () => {
-  //   addRemark([
-  //     this.state.id,
-  //     this.state.remark
-  //   ]).then(res => {
-  //     if (res.data && res.data.message === "success") {
-  //       message.success('添加成功')
-  //       this.setState({
-  //         visible: false,
-  //         describevisible: false,
-  //       })
-  //       getcup([
 
-  //       ]).then(res => {
-  //         if (res.data && res.data.message === "success") {
-  //           this.setState({
-  //             cuplist: res.data.data
-  //           });
-  //         }
-  //       });
-  //     }
-
-  //   });
-
-  // }
 
   //设备位置选择
   addresschange = (e) => {
@@ -289,52 +240,7 @@ class App extends React.Component {
 
 
 
-  //重置
-  reset = () => {
-    this.setState({
-      cityid: undefined,
-      areaid: undefined,
-      siteId: undefined,
-      addresslist: [],
-      keytext: undefined,
-      begintime: undefined,
-      endtime: undefined,
-    }, function () {
-      getcup([
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-      ]).then(res => {
-        if (res.data && res.data.message === "success") {
-          this.setState({
-            cuplist: res.data.data
-          });
-        }
-      });
-    })
 
-  }
-
-  //查询
-  query = () => {
-    getcup([
-      this.state.cityid,
-      this.state.areaid,
-      this.state.siteId,
-      this.state.begintime === undefined ? undefined : moment(this.state.begintime).format('YYYY-MM-DD'),
-      this.state.endtime === undefined ? moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-      this.state.keytext,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          cuplist: res.data.data
-        });
-      }
-    });
-  }
 
   //关键字录入
   keytext = (e) => {
@@ -379,19 +285,19 @@ class App extends React.Component {
                         onChange={this.keytext}
                       />
                       <Button type="primary" onClick={this.query}>查询</Button>
-                      <Button onClick={this.reset} style={{ marginLeft: '15px', marginRight: '15px' }}>重置</Button>
-                      <Button type="primary" onClick={this.monthbtn}>
+                      {/* <Button onClick={this.reset} style={{ marginLeft: '15px', marginRight: '15px' }}>重置</Button> */}
+                      {/* <Button type="primary" onClick={this.monthbtn}>
                         <Link to="/app/monthstatistics">
                           <span>月度打卡</span>
                         </Link>
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 </div>
                 <Table
                   dataSource={this.state.cuplist}
                   columns={this.cupcolumns}
-                  pagination={this.state.page}
+                  pagination={false}
                 />
               </div>
             </Card>
@@ -411,22 +317,6 @@ class App extends React.Component {
               columns={this.cabinetcolumns}
               pagination={this.state.cuppage}
               bordered
-            />
-          </Modal>
-          <Modal
-            title="负责人说明"
-            destroyOnClose
-            onOk={this.explainok}
-            visible={this.state.describevisible}
-            centered
-            width='400px'
-            onCancel={this.handleCancel}
-            mask={false}
-          >
-            <TextArea rows={4} style={{ width: '100%', height: '200px' }}
-              onChange={this.remarkchange}
-              value={this.state.remark}
-              placeholder="请输入说明"
             />
           </Modal>
         </Layout>

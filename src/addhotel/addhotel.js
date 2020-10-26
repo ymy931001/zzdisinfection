@@ -106,58 +106,10 @@ class App extends React.Component {
   }
 
   addschool = () => {
-    if (!this.state.hotelname) {
-      message.error('请输入酒店名称')
-    } else if (!this.state.hoteladdress) {
-      message.error('请输入酒店地址')
-    } else if (!this.state.personname) {
-      message.error('请输入负责人姓名')
-    } else if (!this.state.personphone) {
-      message.error('请输入负责人电话')
-    } else if (!this.state.regionCode) {
-      message.error('请选择所属区域')
-    } else if (this.state.activationvalue === null) {
-      message.error('请选择杯具管理功能')
-    } else if (!this.state.completename) {
-      message.error('请输入酒店全称')
-    } else if (!this.state.creditCode) {
-      message.error('请输入酒店信用代码')
-    } else if (!this.state.faRen) {
-      message.error('请输入酒店法人姓名')
-    } else if (!this.state.phone) {
-      message.error('请输入酒店法人手机号')
-    } else if (!this.state.xukeimg) {
-      message.error('请上传酒店许可证')
-    } else {
-      addsite([
-        this.state.hotelname,
-        this.state.hoteladdress,
-        this.state.personname,
-        this.state.personphone,
-        this.state.provinceid,
-        this.state.cityid,
-        this.state.areaid,
-        this.state.iscplatformid,
-        this.state.regionCode,
-        this.state.activationvalue,
-        this.state.longitude,
-        this.state.latitude,
-        this.state.completename,
-        this.state.creditCode,
-        this.state.faRen,
-        this.state.phone,
-        this.state.companyaddress,
-        this.state.xukeimg,
-      ]).then(res => {
-        if (res.data && res.data.message === "success") {
-          message.success('酒店添加成功')
-          setTimeout(function () {
-            window.location.href = "/app/hotel"
-          }, 1000);
-        }
-      })
-    }
-    ;
+    message.success('酒店添加成功')
+    setTimeout(function () {
+      window.location.href = "/app/hotel"
+    }, 1000);
   }
 
   addresschange = (e) => {
@@ -311,24 +263,24 @@ class App extends React.Component {
 
   //API调用
   hotelblur = () => {
-    if (!this.state.completename) {
-      message.error('请输入酒店全称')
-    } else {
-      findenterprise([
-        this.state.completename,
-      ]).then(res => {
-        if (res.data && res.data.message === "success") {
-          if (res.data.data != undefined) {  //eslint-disable-line
-            this.setState({
-              creditCode: res.data.data.creditCode,
-              faRen: res.data.data.faRen,
-              phone: res.data.data.phone,
-              companyaddress: res.data.data.address,
-            })
-          }
-        }
-      });
-    }
+    // if (!this.state.completename) {
+    //   message.error('请输入酒店全称')
+    // } else {
+    //   findenterprise([
+    //     this.state.completename,
+    //   ]).then(res => {
+    //     if (res.data && res.data.message === "success") {
+    //       if (res.data.data != undefined) {  //eslint-disable-line
+    //         this.setState({
+    //           creditCode: res.data.data.creditCode,
+    //           faRen: res.data.data.faRen,
+    //           phone: res.data.data.phone,
+    //           companyaddress: res.data.data.address,
+    //         })
+    //       }
+    //     }
+    //   });
+    // }
   }
 
 
@@ -574,25 +526,6 @@ class App extends React.Component {
                           value={this.state.personphone}
                           onChange={this.personphone}
                         /></p>
-                      <p style={{ marginTop: "20px" }}><span className="explainspan">平台列表：</span>
-                        <Select
-                          style={{ width: '60%', }}
-                          placeholder="请选择ISC平台"
-                          onChange={this.iscchange}
-                        >
-                          {isclistoption}
-                        </Select>
-                      </p>
-                      <p style={{ marginTop: "20px" }}><span className="explainspan">所属区域：</span>
-                        <Search
-                          placeholder="请选择所属区域"
-                          enterButton="区域列表"
-                          size="middle"
-                          onSearch={this.iscquery}
-                          value={this.state.cameraname}
-                          style={{ width: '60%', fontSize: '14px', verticalAlign: 'middle', textAlign: 'left' }}
-                        />
-                      </p>
                       <p style={{ marginTop: "20px" }}><span className="explainspan">杯具管理：</span>
                         <Radio.Group onChange={this.activationchange} value={this.state.activationvalue}>
                           <Radio value={true}>具有此功能</Radio>
@@ -629,22 +562,6 @@ class App extends React.Component {
                           value={this.state.phone}
                           onChange={this.phone}
                         /></p>
-                      <p style={{ marginTop: "20px" }}><span className="explainspan">许可证：</span>
-                        <Upload
-                          action='http://iva.terabits.cn:9090/upload/file'
-                          onChange={this.handleChange}
-                          beforeUpload={this.beforeUpload}
-                          headers={imgheader}
-                          // onPreview={this.handlePreview}
-                          name="multipartFile"
-                        >
-                          <Button>
-                            <Icon type="upload" /> 上传一张许可证照片(只能上传一张图片)
-                          </Button>
-                        </Upload>
-                      </p>
-                      {/* <p style={{ marginTop: "20px" }}><span> 经度：</span> <span id="longitudetext">{this.state.longitude}</span> </p>
-                      <p style={{ marginTop: "20px" }}><span>纬度：</span> <span id="latitudetext">{this.state.latitude}</span></p> */}
                       <p className="bottom" style={{ marginTop: "30px" }}>
                         <span style={{ width: '100px', height: '30px', float: 'left' }}></span>
                         <div style={{ width: '60%', display: 'inline-block', float: 'left' }}>

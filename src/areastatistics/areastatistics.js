@@ -39,12 +39,84 @@ class App extends React.Component {
       allhotel: [],
       typenone: "inline-block",
       notaddress: [],
-      firstlist: [],
-      twolist: [],
-      threelist: [],
-      fourlist: [],
-      fivelist: [],
-      sixlist: [],
+      firstlist: [{
+        alarmCount: 10,
+        boardCount: 2,
+        boardOnlineRate: 1,
+        cameraCount: 2,
+        cameraOnlineRate: 1,
+        count: 35,
+        housekeeping: 0,
+        rate: 0.3,
+        runtime: 77946,
+        siteName: "郑州大酒店",
+        worktime: 27949,
+      }],
+      twolist: [{
+        alarmCount: 10,
+        boardCount: 2,
+        boardOnlineRate: 1,
+        cameraCount: 2,
+        cameraOnlineRate: 1,
+        count: 35,
+        housekeeping: 0,
+        rate: 0.3,
+        runtime: 77946,
+        siteName: "郑州大酒店",
+        worktime: 27949,
+      }],
+      threelist: [{
+        alarmCount: 10,
+        boardCount: 2,
+        boardOnlineRate: 1,
+        cameraCount: 2,
+        cameraOnlineRate: 1,
+        count: 35,
+        housekeeping: 0,
+        rate: 0.3,
+        runtime: 77946,
+        siteName: "郑州大酒店",
+        worktime: 27949,
+      }],
+      fourlist: [{
+        alarmCount: 10,
+        boardCount: 2,
+        boardOnlineRate: 1,
+        cameraCount: 2,
+        cameraOnlineRate: 1,
+        count: 35,
+        housekeeping: 0,
+        rate: 0.3,
+        runtime: 77946,
+        siteName: "郑州大酒店",
+        worktime: 27949,
+      }],
+      fivelist: [{
+        alarmCount: 10,
+        boardCount: 2,
+        boardOnlineRate: 1,
+        cameraCount: 2,
+        cameraOnlineRate: 1,
+        count: 35,
+        housekeeping: 0,
+        rate: 0.3,
+        runtime: 77946,
+        siteName: "郑州大酒店",
+        worktime: 27949,
+      }],
+      sixlist: [{
+        alarmCount: 10,
+        boardCount: 2,
+        boardOnlineRate: 1,
+        cameraCount: 2,
+        cameraOnlineRate: 1,
+        count: 35,
+        housekeeping: 0,
+        rate: 0.3,
+        runtime: 77946,
+        siteName: "郑州大酒店",
+        worktime: 27949,
+      }],
       size: 'week',
       begintime: moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 7),
       endtime: moment(new Date().getTime()),
@@ -460,83 +532,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem("type") === "2") {
-      this.setState({
-        typenone: 'none'
-      })
-    }
 
-
-    sitelist([]).then(res => {
-      if (res.data && res.data.message === "success") {
-        console.log(res.data.data)
-        var arr = 0
-        for (var i in res.data.data) {
-          arr += parseInt(res.data.data[i].boardQuantity, 10) + parseInt(res.data.data[i].cameraQuantity, 10)
-        }
-        this.setState({
-          one: res.data.data.length,
-          two: arr
-        })
-      }
-    });
-
-
-    areaStatisticsByDate([
-      moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 1).format("YYYY-MM-DD"),
-      moment(new Date().getTime()).format("YYYY-MM-DD"),
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          three: !res.data.data.housekeeping ? 0 : (parseFloat(res.data.data.housekeeping, 10) / 60).toFixed(1),
-          four: !res.data.data.worktime ? 0 : (parseFloat(res.data.data.worktime, 10) / 60).toFixed(1),
-          five: !res.data.data.runtime ? 0 : (parseFloat(res.data.data.runtime, 10) / 60).toFixed(1),
-        })
-      }
-    });
-
-
-    areaStatisticsByDate([
-      moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 7).format("YYYY-MM-DD"),
-      moment(new Date().getTime()).format("YYYY-MM-DD"),
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          datelist: res.data.data.siteStatistics,
-          fourlist: res.data.data.siteStatistics,
-        }, function () {
-          var arr = []
-          var arr1 = []
-          var arr2 = []
-          var arr4 = []
-          var arr5 = []
-          for (var i in this.state.datelist) {
-            if (this.state.datelist[i].housekeeping != undefined) { //eslint-disable-line
-              arr.push(this.state.datelist[i])
-            }
-            if (this.state.datelist[i].runtime != undefined) { //eslint-disable-line
-              arr1.push(this.state.datelist[i])
-            }
-            if (this.state.datelist[i].worktime != undefined) { //eslint-disable-line
-              arr2.push(this.state.datelist[i])
-            }
-            if (this.state.datelist[i].boardOnlineRate != undefined || this.state.datelist[i].cameraOnlineRate != undefined) { //eslint-disable-line
-              arr4.push(this.state.datelist[i])
-            }
-            if (this.state.datelist[i].alarmCount != undefined) { //eslint-disable-line
-              arr5.push(this.state.datelist[i])
-            }
-          }
-          this.setState({
-            firstlist: arr,
-            twolist: arr1,
-            threelist: arr2,
-            fivelist: arr4,
-            sixlist: arr5,
-          })
-        })
-      }
-    });
   }
 
   sitechange = (text, record, index) => {
@@ -563,74 +559,25 @@ class App extends React.Component {
         this.setState({
           begintime: moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 7),
           endtime: moment(new Date().getTime()),
-        }, function () {
-          this.datalist()
         })
       }
       if (this.state.size === "month") {
         this.setState({
           begintime: moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 30),
           endtime: moment(new Date().getTime()),
-        }, function () {
-          this.datalist()
         })
       }
       if (this.state.size === "year") {
         this.setState({
           begintime: moment(new Date().getTime() - 24 * 60 * 60 * 1000 * 183),
           endtime: moment(new Date().getTime()),
-        }, function () {
-          this.datalist()
         })
       }
     })
   }
 
 
-  datalist = () => {
-    areaStatisticsByDate([
-      moment(this.state.begintime).format("YYYY-MM-DD"),
-      moment(this.state.endtime).format("YYYY-MM-DD"),
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          datelist: res.data.data.siteStatistics,
-          fourlist: res.data.data.siteStatistics,
-          fivelist: res.data.data.siteStatistics,
-        }, function () {
-          var arr = []
-          var arr1 = []
-          var arr2 = []
-          var arr4 = []
-          var arr5 = []
-          for (var i in this.state.datelist) {
-            if (this.state.datelist[i].housekeeping != undefined) { //eslint-disable-line
-              arr.push(this.state.datelist[i])
-            }
-            if (this.state.datelist[i].runtime != undefined) { //eslint-disable-line
-              arr1.push(this.state.datelist[i])
-            }
-            if (this.state.datelist[i].worktime != undefined) { //eslint-disable-line
-              arr2.push(this.state.datelist[i])
-            }
-            if (this.state.datelist[i].boardOnlineRate != undefined || this.state.datelist[i].cameraOnlineRate != undefined) { //eslint-disable-line
-              arr4.push(this.state.datelist[i])
-            }
-            if (this.state.datelist[i].alarmCount != undefined) { //eslint-disable-line
-              arr5.push(this.state.datelist[i])
-            }
-          }
-          this.setState({
-            firstlist: arr,
-            twolist: arr1,
-            threelist: arr2,
-            fivelist: arr4,
-            sixlist: arr5,
-          })
-        })
-      }
-    });
-  }
+
 
   //时间筛选
   timeonChange = (value, dateString) => {
@@ -649,7 +596,7 @@ class App extends React.Component {
   }
 
   query = () => {
-    this.datalist()
+
   }
 
 
@@ -764,7 +711,7 @@ class App extends React.Component {
                       <div className="dashmain tongji1">
                         <img src={require('./tongji31.png')} alt="" style={{ width: '25%' }} />
                         <div style={{ textAlign: 'center' }}>
-                          <span className="dashtxt">{this.state.one}</span><span className="dashdw">个</span>
+                          <span className="dashtxt">1</span><span className="dashdw">个</span>
                           <div className="dashleft">
                             酒店数量
                           </div>
@@ -775,7 +722,7 @@ class App extends React.Component {
                       <div className="dashmain tongji2">
                         <img src={require('./tongji21.png')} alt="" className="dashimg" />
                         <div style={{ textAlign: 'center' }}>
-                          <span className="dashtxt">{this.state.two}</span><span className="dashdw">个</span>
+                          <span className="dashtxt">4</span><span className="dashdw">个</span>
                           <div className="dashleft">
                             设备数量
                         </div>
@@ -786,7 +733,7 @@ class App extends React.Component {
                       <div className="dashmain  tongji4">
                         <img src={require('./tongji61.png')} alt="" className="dashimg" />
                         <div style={{ textAlign: 'center' }}>
-                          <span className="dashtxt">{this.state.four}</span><span className="dashdw">分</span>
+                          <span className="dashtxt">0</span><span className="dashdw">分</span>
                           <div className="dashleft">
                             昨日洗消时长
                         </div>
@@ -797,7 +744,7 @@ class App extends React.Component {
                       <div className="dashmain  tongji5">
                         <img src={require('./tongji71.png')} alt="" className="dashimg" />
                         <div style={{ textAlign: 'center' }}>
-                          <span className="dashtxt">{this.state.five}</span><span className="dashdw">分</span>
+                          <span className="dashtxt">30.6</span><span className="dashdw">分</span>
                           <div className="dashleft">
                             昨日消毒柜工作时长
                         </div>
@@ -808,7 +755,7 @@ class App extends React.Component {
                       <div className="dashmain  tongji3">
                         <img src={require('./tongji11.png')} alt="" className="dashimg" />
                         <div style={{ textAlign: 'center' }}>
-                          <span className="dashtxt">{this.state.three}</span><span className="dashdw">分</span>
+                          <span className="dashtxt">12.1</span><span className="dashdw">分</span>
                           <div className="dashleft">
                             昨日保洁时长
                         </div>

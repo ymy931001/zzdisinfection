@@ -99,73 +99,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    sitelist([
 
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        var arr = {}
-        for (var i in res.data.data) {
-          arr[res.data.data[i].id] = res.data.data[i].sitename
-        }
-        this.setState({
-          sitelist: arr,
-        });
-      }
-    });
-
-    getregion().then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data.length !== 0) {
-          for (var i in res.data.data[0].children) {
-            for (var j in res.data.data[0].children[i].children) {
-              for (var k in res.data.data[0].children[i].children[j].children) {
-                if (res.data.data[0].children[i].children[j].children[k].children.length === 0) {
-                  res.data.data[0].children[i].children[j].children[k].adcode = res.data.data[0].children[i].children[j].children[k].id
-                  res.data.data[0].children[i].children[j].children[k].children = undefined
-                }
-              }
-            }
-          }
-          this.setState({
-            deviceList: res.data.data[0].children
-          })
-        } else {
-          this.setState({
-            deviceList: []
-          })
-        }
-      }
-    });
-    this.detectionService()
 
   }
 
-  detectionService = () => {
-    gethandheld([
-      this.state.pageNum,
-      this.state.pageNumSize,
-      this.state.cityid,
-      this.state.areaid,
-      this.state.siteId,
-      null,
-      moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD"),
-      this.state.keytext,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data === null) {
-          this.setState({
-            videoListDataSource: []
-          })
-        } else {
-          this.setState({
-            videoListDataSource: res.data.data.detectionVOList,
-            total: res.data.data.total,
-          })
-        }
-      }
-    })
-  }
 
+  
 
   onChange = (date, dateString) => {
     console.log(date, dateString);
@@ -196,74 +135,10 @@ class App extends React.Component {
   }
 
 
-  query = () => {
-    gethandheld([
-      this.state.pageNum,
-      this.state.pageNumSize,
-      this.state.cityid,
-      this.state.areaid,
-      this.state.siteId,
-      this.state.begintime === undefined ? undefined : moment(this.state.begintime).format('YYYY-MM-DD'),
-      this.state.endtime === undefined ? moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-      this.state.keytext,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data === null) {
-          this.setState({
-            videoListDataSource: []
-          })
-        } else {
-          this.setState({
-            videoListDataSource: res.data.data.detectionVOList,
-            total: res.data.data.total,
-          })
-        }
-      }
-    })
-  }
+  
+  
 
-
-  //分页
-
-  pagechange = (page, num) => {
-    console.log(page, num)
-    console.log(this.state.endtime)
-    this.setState({
-      pageNum: page,
-      pageNumSize: num,
-    }, function () {
-      gethandheld([
-        this.state.pageNum,
-        this.state.pageNumSize,
-        this.state.cityid,
-        this.state.areaid,
-        this.state.siteId,
-        this.state.begintime === undefined ? undefined : moment(this.state.begintime).format('YYYY-MM-DD'),
-        this.state.endtime === undefined ? moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-        this.state.keytext,
-      ]).then(res => {
-        if (res.data && res.data.message === "success") {
-          if (res.data.data === null) {
-            this.setState({
-              videoListDataSource: []
-            })
-          } else {
-            this.setState({
-              videoListDataSource: res.data.data.detectionVOList,
-              total: res.data.data.total,
-            })
-          }
-        }
-      })
-    })
-  }
-
-  //酒店选择
-  hotelchange = (value) => {
-    this.setState({
-      hotelid: value
-    })
-  }
+  
   //时间选择
   timeonChange = (value, dateString) => {
     console.log(dateString)
@@ -286,20 +161,7 @@ class App extends React.Component {
       });
     }
   }
-  //重置
-  reset = () => {
-    this.setState({
-      cityid: undefined,
-      areaid: undefined,
-      siteId: undefined,
-      addresslist: [],
-      keytext: undefined,
-      begintime: undefined,
-      endtime: undefined,
-    }, function () {
-      this.detectionService()
-    })
-  }
+ 
 
 
   //关键字录入
@@ -357,7 +219,6 @@ class App extends React.Component {
                     onChange={this.keytext}
                   />
                   <Button type="primary" onClick={this.query}>查询</Button>
-                  <Button onClick={this.reset} style={{ marginLeft: '15px' }}>重置</Button>
                 </div>
               </div>
               <div style={{ marginTop: '20px' }}>

@@ -32,6 +32,46 @@ class App extends React.Component {
       pageNumSize: 10,
       begintime: undefined,
       endtime: undefined,
+      videoListDataSource: [{
+        code: "c1600012800091ygl73",
+        count: 0,
+        date: "2020-09-14 00:00:00",
+        gmtcreate: "2020-09-14 00:00:00",
+        gmtmodify: "2020-09-15 06:01:31",
+        id: 1391,
+        name: "主9F消毒间",
+        number: 0,
+        pictureAddress: "/mnt/detection/resource/1/to/主9F消毒间-2020-09-14.zip",
+        result: 1,
+        roomId: 1,
+        runtime: 803,
+        siteId: 1,
+        siteName: "郑州大酒店",
+        status: 5,
+        valid: 1,
+        videoAddress: "/mnt/detection/resource/1/video/主9F消毒间-2020-09-14.mp4",
+        worktime: 189,
+      }, {
+        code: "o16035552000161m8af",
+        count: 0,
+        date: "2020-10-25 00:00:00",
+        gmtcreate: "2020-10-25 00:00:00",
+        gmtmodify: "2020-10-26 01:08:31",
+        id: 2432,
+        name: "主15F消毒间",
+        number: 0,
+        pictureAddress: "/mnt/detection/resource/3/to/主15F消毒间-2020-10-25.zip",
+        result: 1,
+        roomId: 3,
+        runtime: 2450,
+        siteId: 1,
+        siteName: "郑州大酒店",
+        status: 5,
+        valid: 1,
+        videoAddress: "/mnt/detection/resource/3/video/主15F消毒间-2020-10-25.mp4",
+        worktime: 644,
+      }],
+
     };
     this.nodeInfoTableColumns = [
       {
@@ -44,7 +84,7 @@ class App extends React.Component {
         render: (text, record, index) => {
           return (
             <div>
-              <a onClick={() => this.findroom(text, record, index)} style={{ color: '#666' }}>
+              <a style={{ color: '#666' }}>
                 {text}
               </a>
             </div>
@@ -106,89 +146,14 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    getregion().then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data.length !== 0) {
-          for (var i in res.data.data[0].children) {
-            for (var j in res.data.data[0].children[i].children) {
-              for (var k in res.data.data[0].children[i].children[j].children) {
-                if (res.data.data[0].children[i].children[j].children[k].children.length === 0) {
-                  res.data.data[0].children[i].children[j].children[k].adcode = res.data.data[0].children[i].children[j].children[k].id
-                  res.data.data[0].children[i].children[j].children[k].children = undefined
-                }
-              }
-            }
-          }
-          this.setState({
-            deviceList: res.data.data[0].children
-          })
-        } else {
-          this.setState({
-            deviceList: []
-          })
-        }
-      }
-    });
 
 
-    this.detectionService()
+
+
 
   }
 
-  detectionService = () => {
-    detectionService([
-      this.state.pageNum,
-      this.state.pageNumSize,
-      null,
-      null,
-      null,
-      null,
-      moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD")
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data === null) {
-          this.setState({
-            videoListDataSource: []
-          })
-        } else {
-          this.setState({
-            videoListDataSource: res.data.data.detectionVOList,
-            total: res.data.data.total,
-          })
-        }
-      }
-    })
-  }
 
-  //房间搜索
-  findroom = (text, record, index) => {
-    this.setState({
-      keytext: text
-    })
-    detectionService([
-      this.state.pageNum,
-      this.state.pageNumSize,
-      null,
-      null,
-      null,
-      null,
-      this.state.endtime === undefined ? moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-      text
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data === null) {
-          this.setState({
-            videoListDataSource: []
-          })
-        } else {
-          this.setState({
-            videoListDataSource: res.data.data.detectionVOList,
-            total: res.data.data.total,
-          })
-        }
-      }
-    })
-  }
 
 
   onChange = (date, dateString) => {
@@ -221,67 +186,13 @@ class App extends React.Component {
 
   //查询
   query = () => {
-    detectionService([
-      this.state.pageNum,
-      this.state.pageNumSize,
-      this.state.cityid,
-      this.state.areaid,
-      this.state.siteId,
-      this.state.begintime === undefined ? undefined : moment(this.state.begintime).format('YYYY-MM-DD'),
-      this.state.endtime === undefined ? moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-      this.state.keytext,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data === null) {
-          this.setState({
-            videoListDataSource: []
-          })
-        } else {
-          this.setState({
-            videoListDataSource: res.data.data.detectionVOList,
-            total: res.data.data.total,
-          })
-        }
-      }
-    });
+
   }
 
 
   //分页
 
-  pagechange = (page, num) => {
-    console.log(page, num)
-    console.log(this.state.endtime)
-    this.setState({
-      pageNum: page,
-      pageNumSize: num,
-    }, function () {
-      detectionService([
-        this.state.pageNum,
-        this.state.pageNumSize,
-        this.state.cityid,
-        this.state.areaid,
-        this.state.siteId,
-        this.state.begintime === undefined ? undefined : moment(this.state.begintime).format('YYYY-MM-DD'),
-        this.state.endtime === undefined ? moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-        this.state.keytext,
-      ]).then(res => {
-        if (res.data && res.data.message === "success") {
-          if (res.data.data === null) {
-            this.setState({
-              videoListDataSource: []
-            })
-          } else {
-            this.setState({
-              videoListDataSource: res.data.data.detectionVOList,
-              total: res.data.data.total,
-            })
-          }
-        }
-      })
 
-    })
-  }
 
 
 
@@ -313,20 +224,6 @@ class App extends React.Component {
   }
 
 
-  //重置
-  reset = () => {
-    this.setState({
-      cityid: undefined,
-      areaid: undefined,
-      siteId: undefined,
-      addresslist: [],
-      keytext: undefined,
-      begintime: undefined,
-      endtime: undefined,
-    }, function () {
-      this.detectionService()
-    })
-  }
 
   //关键字录入
   keytext = (e) => {
@@ -382,7 +279,6 @@ class App extends React.Component {
                     onChange={this.keytext}
                   />
                   <Button type="primary" onClick={this.query}>查询</Button>
-                  <Button onClick={this.reset} style={{ marginLeft: '15px' }}>重置</Button>
                 </div>
               </div>
               <div style={{ marginTop: '20px' }}>
@@ -390,16 +286,6 @@ class App extends React.Component {
                   dataSource={this.state.videoListDataSource}
                   columns={nodeInfoTableColumns}
                   pagination={false}
-                />
-              </div>
-              <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
-                <Pagination
-                  onShowSizeChange={this.onShowSizeChange}
-                  defaultCurrent={1}
-                  onChange={this.pagechange}
-                  total={this.state.total}
-                  hideOnSinglePage={true}
-                  current={this.state.pageNum}
                 />
               </div>
             </Card>

@@ -35,6 +35,19 @@ class App extends React.Component {
       arealist: [],
       sitelists: [],
       permissionlist: [],
+      rolelist: [{
+        id: 1,
+        name: "ROLE_SUPER",
+        namezh: "系统管理员",
+      }, {
+        id: 2,
+        name: "ROLE_AREA",
+        namezh: "区域管理员",
+      }, {
+        id: 4,
+        name: "ROLE_SITE",
+        namezh: "酒店管理员",
+      }]
     };
 
 
@@ -47,25 +60,7 @@ class App extends React.Component {
 
   componentDidMount() {
 
-    rolelist([
 
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          rolelist: res.data.data
-        }, function () {
-          if (res.data.data.length < 10) {
-            this.setState({
-              page: false
-            })
-          } else {
-            this.setState({
-              page: true
-            })
-          }
-        });
-      }
-    });
 
 
 
@@ -127,135 +122,25 @@ class App extends React.Component {
   }
   //添加角色
   handleOk = () => {
-    addrole([
-      this.state.roleZh,
-      this.state.role,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        message.success('角色添加成功')
-        this.setState({
-          visible: false
-        })
-        rolelist([
-
-        ]).then(res => {
-          if (res.data && res.data.message === "success") {
-            this.setState({
-              rolelist: res.data.data
-            }, function () {
-              if (res.data.data.length < 10) {
-                this.setState({
-                  page: false
-                })
-              } else {
-                this.setState({
-                  page: true
-                })
-              }
-            });
-          }
-        });
-      }
-    });
-  }
-
-  //修改权限
-  saveOk = () => {
-    updateMenuRole([
-      this.state.roleid,
-      this.state.checkedKeys.join(','),
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        message.success('角色权限修改成功')
-        this.setState({
-          menuvisible: false
-        })
-        rolelist([
-
-        ]).then(res => {
-          if (res.data && res.data.message === "success") {
-            this.setState({
-              rolelist: res.data.data
-            }, function () {
-              if (res.data.data.length < 10) {
-                this.setState({
-                  page: false
-                })
-              } else {
-                this.setState({
-                  page: true
-                })
-              }
-            });
-          }
-        });
-      }
-    });
-  }
-
-  onExpand = (expandedKeys) => {
-    console.log('onExpand', expandedKeys);
-    // if not set autoExpandParent to false, if children expanded, parent can not collapse.
-    // or, you can remove all expanded children keys.
     this.setState({
-      expandedKeys,
-      autoExpandParent: true,
-    });
+      visible: false
+    })
   }
 
-  onCheck = (checkedKeys) => {
-    console.log('onCheck', checkedKeys);
-    this.setState({
-      checkedKeys: checkedKeys,
-    });
-  }
-
-  onSelect = (selectedKeys, info) => {
-    console.log('onSelect', info);
-    this.setState({ selectedKeys });
-  }
 
   //删除角色
   deleteOk = (text, record, index) => {
-    console.log(record)
-    deleterole([
-      this.state.roleid,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        message.success("角色删除成功");
-        const dataSource = [...this.state.rolelist];
-        this.setState({
-          deletevisible:false,
-          rolelist: dataSource.filter(item => item.id !== this.state.roleid),
-        });
-      } else {
-        message.error(res.data.data)
-      }
+    this.setState({
+      deletevisible: false,
     });
   }
-
-
-
-  renderTreeNodes = (data) => {
-    return data.map((item) => {
-      if (item.children) {
-        return (
-          <TreeNode title={item.name} key={item.id} dataRef={item}>
-            {this.renderTreeNodes(item.children)}
-          </TreeNode>
-        );
-      }
-      return <TreeNode {...item} />;
-    });
-  }
-
-  //删除
-  onDelete = (text, record, index) => {
+  onDelete = () => {
     this.setState({
       deletevisible: true,
-      roleid: text,
-    })
+    });
   }
+
+
 
   render() {
     const components = {
@@ -279,7 +164,7 @@ class App extends React.Component {
         render: (text, record, index) => {
           return (
             <div>
-              <span onClick={() => this.showModal(text, index, record)} style={{ color: 'blue', cursor: 'pointer' }}>
+              <span style={{ color: 'blue', cursor: 'pointer' }}>
                 选择权限
               </span>
               <span style={{ marginLeft: '10px' }}>
@@ -335,7 +220,7 @@ class App extends React.Component {
                   dataSource={this.state.rolelist}
                   components={components}
                   columns={nodeInfoTableColumns}
-                  pagination={this.state.page}
+                  pagination={false}
                 />
               </div>
             </Card>
@@ -381,29 +266,7 @@ class App extends React.Component {
           >
             您确定要删除该角色吗？
           </Modal>
-          <Modal
-            title="选择权限"
-            visible={this.state.menuvisible}
-            onOk={this.saveOk}
-            onCancel={this.handleCancel}
-            okText="保存"
-            // centered
-            mask={false}
-          >
-            <Tree
-              checkable
-              onExpand={this.onExpand}
-              expandedKeys={this.state.expandedKeys}
-              autoExpandParent={this.state.autoExpandParent}
-              defaultCheckedKeys={this.state.tree}
-              onCheck={this.onCheck}
-              checkedKeys={this.state.checkedKeys}
-              onSelect={this.onSelect}
-              selectedKeys={this.state.selectedKeys}
-            >
-              {this.renderTreeNodes(this.state.permissionlist)}
-            </Tree>
-          </Modal>
+
         </Layout>
       </Layout >
     );

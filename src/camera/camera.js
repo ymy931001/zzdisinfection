@@ -144,27 +144,7 @@ class App extends React.Component {
     })
   }
 
-  addschool = () => {
-    if (this.state.ymin === null) {
-      message.error('请选择检测范围，在图片中画框')
-    } else {
-      insertargs([
-        this.state.deviceId,
-        this.state.xmin,
-        this.state.xmax,
-        this.state.ymin,
-        this.state.ymax,
-        this.state.bbox
-      ]).then(res => {
-        if (res.data && res.data.message === "success") {
-          message.success('参数修改成功')
-          setTimeout(() => {
-            window.location = "/app/equipment"
-          }, 1000);
-        }
-      });
-    }
-  }
+
 
   move = (e) => {
     this.setState({
@@ -256,22 +236,7 @@ class App extends React.Component {
     })
   }
 
-  //刷新图片
-  freshen = () => {
-    devicecover([
-      this.state.deviceId
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        message.success('刷新成功')
-        // this.setState({
-        //   cameraimg: "http://iva.terabits.cn/" + res.data.data
-        // })
-        setTimeout(function () {
-          window.location.href = "/app/camera";
-        }, 1000);
-      }
-    });
-  }
+
 
 
   render() {
@@ -280,10 +245,6 @@ class App extends React.Component {
         <Layout>
           <Content style={{ margin: "16px 16px" }} >
             <Card title="摄像头参数" headStyle={{ fontWeight: 'bold', fontSize: '18px' }}
-              extra={
-                <div>
-                  <Button type="primary" size='large' onClick={this.freshen} style={{ marginLeft: '20px' }}>刷新封面</Button>
-                </div>}
             >
               <div>
                 <div style={{ display: 'block', textAlign: 'center' }}>
@@ -378,7 +339,7 @@ class App extends React.Component {
                       >
                         <Link to="/app/equipment">返回</Link>
                       </Button>
-                      <Button type="primary" size='large' onClick={this.addschool}>修改</Button>
+                      <Button type="primary" size='large'>修改</Button>
                     </div>
                   </div>
                 </div>

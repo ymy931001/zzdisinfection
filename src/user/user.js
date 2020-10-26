@@ -42,19 +42,6 @@ function callback(key) {
 
 
 
-// const typetext = {
-//   "0": "超级管理员",
-//   "1": '管理员',
-//   "2": '酒店管理员',
-// };
-
-// const typetexts = {
-//   "超级管理员": "0",
-//   "管理员": '1',
-//   "酒店管理员": '2',
-// };
-
-
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -124,6 +111,41 @@ class App extends React.Component {
       arealist: [],
       sitelists: [],
       permissionlist: [],
+      userlist: [{
+        gmtcreate: "2020-10-16 15:03:14",
+        id: 3,
+        lastLogin: "2020-10-26 15:03:14",
+        mail: "772988756@qq.com",
+        name: "郑州市卫生监督所",
+        notifier: false,
+        phone: "110",
+        status: true,
+        username: "admin",
+      }],
+      areauserlist: [{
+        gmtcreate: "2020-08-26 15:58:17",
+        id: 61,
+        lastLogin: "2020-10-23 11:05:54",
+        mail: "772988756@qq.com",
+        name: "郑州卫计所",
+        notifier: false,
+        phone: "15355497220",
+        status: true,
+        username: "zzadmin",
+      }],
+      hoteluserlist: [{
+        gmtcreate: "2020-10-25 15:01:55",
+        id: 56,
+        lastLogin: "2020-10-24 09:11:29",
+        mail: "772988756@qq.com",
+        name: "张经理",
+        notifier: false,
+        phone: "15355497220",
+        siteId: 1,
+        siteName: "郑州大酒店",
+        status: true,
+        username: "hoteladmin",
+      }],
       typelist: [{
         'id': '0',
         'value': '超级管理员'
@@ -146,125 +168,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem("type") === "2") {
-      this.setState({
-        typenone: 'none'
-      })
-    }
-    if (localStorage.getItem("type") === "0") {
-      this.setState({
-        typelist: [{
-          'id': '0',
-          'value': '超级管理员'
-        }, {
-          'id': '1',
-          'value': '管理员'
-        }, {
-          'id': '2',
-          "value": '酒店管理员'
-        }]
-      })
-    } else {
-      this.setState({
-        typelist: [{
-          'id': '1',
-          'value': '管理员'
-        }, {
-          'id': '2',
-          "value": '酒店管理员'
-        }]
-      })
-    }
-
-    this.getMock();
-
-    hotellist().then(res => {
-      console.log(res.data.data)
-      var arr = []
-      for (var i in res.data.data) {
-        arr.push({
-          i: res.data.data[i]
-        })
-      }
-      arr.push({
-        '无': undefined
-      })
-      console.log(arr)
-      this.setState({
-        sitelist: res.data.data,
-        sitelists: arr,
-      });
-    });
-
-
-    getAreaMap().then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          arealist: res.data.data
-        })
-      }
-    });
-
-    userlist([1]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          userlist: res.data.data
-        }, function () {
-          if (res.data.data.length < 10) {
-            this.setState({
-              page: false
-            })
-          } else {
-            this.setState({
-              page: true
-            })
-          }
-        });
-      }
-    });
-
-    userlist([2]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          areauserlist: res.data.data
-        }, function () {
-          if (res.data.data.length < 10) {
-            this.setState({
-              page: false
-            })
-          } else {
-            this.setState({
-              page: true
-            })
-          }
-        });
-      }
-    });
-
-
-    userlist([4]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          hoteluserlist: res.data.data
-        }, function () {
-          if (res.data.data.length < 10) {
-            this.setState({
-              page: false
-            })
-          } else {
-            this.setState({
-              page: true
-            })
-          }
-        });
-      }
-    });
-
-
 
 
     getallRegion([
-      330000
+      410000
     ]).then(res => {
       if (res.data && res.data.message === "success") {
         this.setState({
@@ -272,10 +179,6 @@ class App extends React.Component {
         })
       }
     });
-
-
-
-
 
 
   }
@@ -287,6 +190,12 @@ class App extends React.Component {
   setup = () => {
     this.setState({
       visible: true
+    })
+  }
+
+  saveOk = () => {
+    this.setState({
+      menuvisible: false
     })
   }
 
@@ -324,156 +233,29 @@ class App extends React.Component {
   }
 
 
-  getMock = () => {
-    userlist([
-      1
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        const targetKeys = [];
-        const mockData = [];
-        for (var i in res.data.data) {
-          mockData.push({
-            'key': res.data.data[i].id,
-            'name': res.data.data[i].adminname,
-            'phone': res.data.data[i].phone,
-            'id': res.data.data[i].id,
-            'chosen': res.data.data[i].notifier === null || res.data.data[i].notifier === false || res.data.data[i].notifier === 'null' ? false : true,
-          })
-        }
-        for (var j in mockData) {
-          if (mockData[j].chosen === true) {
-            targetKeys.push(mockData[j].id);
-          }
-        }
-        console.log(targetKeys)
-        this.setState({
-          mockData,
-          targetKeys,
-        });
-      }
-    });
-  };
-
-  handleChange = (targetKeys, direction, moveKeys) => {
-    console.log(targetKeys.length)
-    console.log(this.state.targetKeys.length)
-    if (targetKeys.length > this.state.targetKeys.length) {
-      addUserAlarm([
-        moveKeys.length === 0 ? '' : moveKeys.join(',')
-      ]).then(res => {
-
-      });
-    }
-    if (targetKeys.length < this.state.targetKeys.length) {
-      removeUserAlarm([
-        moveKeys.length === 0 ? '' : moveKeys.join(',')
-      ]).then(res => {
-
-      });
-    }
-    this.setState({ targetKeys });
-  };
-
-  renderItem = item => {
-    const customLabel = (
-      <span className="custom-item">
-        {item.name} - {item.phone}
-      </span>
-    );
-
-    return {
-      label: customLabel, // for displayed item
-      value: item.name, // for title and filter matching
-    };
-  };
 
 
-  isEditing = (record) => {
-    return record.id === this.state.editingKey
 
-  };
-  edit(text, record, index) {
-    console.log(text)
-    console.log(record.type)
-    if (record.siteId === null) {
-      this.setState({
-        siteid: '无'
-      })
-    }
-    if (record.type === 2) {
-      this.setState({
-        hotllists: JSON.parse(localStorage.getItem('sitelist'))
-      })
-    } else {
-      this.setState({
-        hotllists: []
-      })
-    }
+
+  //删除用户
+  deleteOk = (text, record, index) => {
     this.setState({
-      usertypeid: record.type,
-      editingKey: record.id,
-      userid: record.id,
-      siteid: record.siteId,
-      username: record.name,
-      mail: record.mail,
+      deletevisible: false,
+    });
+
+  }
+
+  onDelete = () => {
+    this.setState({
+      deletevisible: true,
     });
   }
-  cancel = () => {
-    this.setState({ editingKey: '' });
-  };
 
-
-  save(form, key, text) {
-    form.validateFields((error, row) => {
-      if (error) {
-        return;
-      }
-      const newData = [...this.state.areauserlist];
-      console.log(newData)
-      const index = newData.findIndex(item => key === item.key);
-      console.log(newData[index])
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        this.setState({
-          areauserlist: newData, editingKey: '',
-          adminname: newData[index].name,
-          username: newData[index].username,
-          phone: newData[index].phone,
-          password: newData[index].password,
-          mail: newData[index].mail,
-        }, () => {
-          putuser([
-            this.state.userid,
-            this.state.adminname,
-            this.state.phone,
-            this.state.username,
-            this.state.mail,
-          ]).then(res => {
-            if (res.data && res.data.message === 'success') {
-              message.success("信息修改成功");
-              userlist([
-                2
-              ]).then(res => {
-                if (res.data && res.data.message === 'success') {
-                  this.setState({
-                    areauserlist: res.data.data,
-                  });
-                }
-              });
-            }
-          });
-
-        });
-
-      } else {
-        newData.push(this.state.areauserlist);
-        this.setState({ areauserlist: newData, editingKey: '' });
-      }
-    });
+  //打开区域弹框
+  showModal = (text, index, record) => {
+    this.setState({
+      menuvisible: true,
+    })
   }
 
 
@@ -504,101 +286,6 @@ class App extends React.Component {
     console.log('onCheck', checkedKeys);
     this.setState({
       checkedKeys: checkedKeys,
-    });
-  }
-
-  onSelect = (selectedKeys, info) => {
-    console.log('onSelect', info);
-    this.setState({ selectedKeys });
-  }
-
-  //打开区域弹框
-  showModal = (text, index, record) => {
-    console.log(record)
-    this.setState({
-      userid: record.id
-    })
-    getAdminAreas([
-      record.id
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          menuvisible: true,
-          checkedKeys: res.data.data
-        })
-      }
-    });
-  }
-
-
-  //修改权限
-  saveOk = () => {
-    updateAdminAreas([
-      this.state.userid,
-      this.state.checkedKeys.join(','),
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        message.success('用户管辖区域修改成功')
-        this.setState({
-          menuvisible: false
-        })
-        userlist([1]).then(res => {
-          if (res.data && res.data.message === "success") {
-            this.setState({
-              userlist: res.data.data
-            }, function () {
-              if (res.data.data.length < 10) {
-                this.setState({
-                  page: false
-                })
-              } else {
-                this.setState({
-                  page: true
-                })
-              }
-            });
-          }
-        });
-
-      }
-    });
-  }
-
-
-
-  //删除用户
-  onDelete = (text, record, index) => {
-    this.setState({
-      deletevisible: true,
-      userid: record.id
-    })
-  }
-
-
-
-  //删除用户
-  deleteOk = (text, record, index) => {
-    console.log(record)
-    deleteuser([
-      this.state.userid,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        message.success("用户删除成功");
-        const dataSource = [...this.state.areauserlist];
-        this.setState({
-          deletevisible: false,
-          areauserlist: dataSource.filter(item => item.id !== this.state.userid),
-        });
-
-        const dataSources = [...this.state.hoteluserlist];
-        this.setState({
-          deletevisible: false,
-          hoteluserlist: dataSources.filter(item => item.id !== this.state.userid),
-        });
-
-      } else {
-        message.error(res.data.data)
-      }
     });
   }
 
@@ -710,26 +397,6 @@ class App extends React.Component {
         }
       }
       ,
-      // {
-      //   title: "所属部门",
-      //   dataIndex: "areaId",
-      //   render: (text) => {
-      //     if (text === null || text === "" || text === undefined) {
-      //       return (
-      //         <div>
-      //           无
-      //         </div>
-      //       )
-      //     } else {
-      //       return (
-      //         <div>
-      //           {this.state.arealist[text]}
-      //         </div>
-      //       )
-      //     }
-      //   }
-      // }
-      
       {
         title: "管辖区域",
         dataIndex: "areaId",
@@ -752,32 +419,9 @@ class App extends React.Component {
         title: '操作',
         dataIndex: 'id',
         render: (text, record, index) => {
-          const editable = this.isEditing(record);
           return (
             <div>
-              {editable ? (
-                <span>
-                  <EditableContext.Consumer>
-                    {form => (
-                      <a
-
-                        onClick={() => this.save(form, record.key, text)}
-                        style={{ marginRight: 8 }}
-                      >
-                        保存
-                      </a>
-                    )}
-                  </EditableContext.Consumer>
-                  <Popconfirm
-                    title="确认要取消吗?"
-                    onConfirm={() => this.cancel(record.key, text)}
-                  >
-                    <a>取消</a>
-                  </Popconfirm>
-                </span>
-              ) : (
-                  <a onClick={() => this.edit(text, record, index)}><img src={require('./edit.png')} alt="" /></a>
-                )}
+              <a ><img src={require('./edit.png')} alt="" /></a>
               <span style={{ marginLeft: '20px' }} onClick={() => this.onDelete(text, record, index)}>
                 <a><img src={require('./delete.png')} alt="" /></a>
               </span>
@@ -836,35 +480,11 @@ class App extends React.Component {
         title: "所属酒店",
         dataIndex: "siteName",
         render: (text, record, index) => {
-          const editable = this.isEditing(record);
-          if (text === null) {
-            return (
-              <div>
-                {editable ? (
-                  <Select value={this.state.sitelist[this.state.siteid]} onChange={this.hotelChange} style={{ width: '250px' }} placeholder="请选择所属酒店" >
-                    {typeOptions}
-                  </Select>
-                ) : (
-                    <span>无</span>
-                  )
-                }</div>
-            )
-          } else {
-            return (
-              <div>
-                {editable ? (
-                  <Select value={this.state.sitelist[this.state.siteid]} onChange={this.hotelChange} style={{ width: '250px' }} >
-                    {typeOptions}
-                  </Select>
-                ) : (
-                    <span>
-                      {text}
-                    </span>
-                  )
-                }
-              </div>
-            )
-          }
+          return (
+            <span>
+              {text}
+            </span>
+          )
         }
       },
       {
@@ -875,32 +495,9 @@ class App extends React.Component {
         title: '操作',
         dataIndex: 'id',
         render: (text, record, index) => {
-          const editable = this.isEditing(record);
           return (
             <div>
-              {editable ? (
-                <span>
-                  <EditableContext.Consumer>
-                    {form => (
-                      <a
-
-                        onClick={() => this.save(form, record.key, text)}
-                        style={{ marginRight: 8 }}
-                      >
-                        保存
-                      </a>
-                    )}
-                  </EditableContext.Consumer>
-                  <Popconfirm
-                    title="确认要取消吗?"
-                    onConfirm={() => this.cancel(record.key, text)}
-                  >
-                    <a>取消</a>
-                  </Popconfirm>
-                </span>
-              ) : (
-                  <a onClick={() => this.edit(text, record, index)}><img src={require('./edit.png')} alt="" /></a>
-                )}
+              <a><img src={require('./edit.png')} alt="" /></a>
               <span style={{ marginLeft: '20px' }} onClick={() => this.onDelete(text, record, index)}>
                 <a><img src={require('./delete.png')} alt="" /></a>
               </span>
@@ -922,7 +519,7 @@ class App extends React.Component {
           inputType: col.dataIndex === 'age' ? 'number' : 'text',
           dataIndex: col.dataIndex,
           title: col.title,
-          editing: this.isEditing(record),
+          // editing: this.isEditing(record),
         }),
       };
     });
@@ -939,7 +536,7 @@ class App extends React.Component {
           inputType: col.dataIndex === 'age' ? 'number' : 'text',
           dataIndex: col.dataIndex,
           title: col.title,
-          editing: this.isEditing(record),
+          // editing: this.isEditing(record),
         }),
       };
     });
@@ -955,7 +552,7 @@ class App extends React.Component {
           inputType: col.dataIndex === 'age' ? 'number' : 'text',
           dataIndex: col.dataIndex,
           title: col.title,
-          editing: this.isEditing(record),
+          // editing: this.isEditing(record),
         }),
       };
     });
@@ -966,11 +563,6 @@ class App extends React.Component {
             <Card title="账号管理-用户管理" id="nodeManage" headStyle={{ fontWeight: 'bold', fontSize: '18px' }}
               extra={
                 <div>
-                  <Button type="primary" onClick={this.setup}
-                    style={{ marginRight: '20px', display: this.state.typenone }}
-                  >
-                    添加推送
-                </Button>
                   <Button type="primary"
                     style={{ background: '#0070CC', border: '1px solid #0070CC', marginRight: '20px', display: this.state.typenone }}
                   >
@@ -986,7 +578,7 @@ class App extends React.Component {
                       dataSource={this.state.userlist}
                       components={components}
                       columns={nodeInfoTableColumns}
-                      pagination={this.state.page}
+                      pagination={false}
                     />
                   </div>
                 </TabPane>
@@ -996,7 +588,7 @@ class App extends React.Component {
                       dataSource={this.state.areauserlist}
                       components={components}
                       columns={areaColumns}
-                      pagination={this.state.page}
+                      pagination={false}
                     />
                   </div>
                 </TabPane>
@@ -1006,7 +598,7 @@ class App extends React.Component {
                       dataSource={this.state.hoteluserlist}
                       components={components}
                       columns={hotelColumns}
-                      pagination={this.state.page}
+                      pagination={false}
                     />
                   </div>
                 </TabPane>

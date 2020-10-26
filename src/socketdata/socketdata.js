@@ -37,6 +37,41 @@ class App extends React.Component {
       pageNumSize: 10,
       begintime: undefined,
       endtime: undefined,
+      userlist: [{
+        "code": "z1603555200016fazj8",
+        "count": 0,
+        date: "2020-10-25 00:00:00",
+        gmtcreate: "2020-10-25 00:00:00",
+        gmtmodify: "2020-10-26 01:06:23",
+        id: 2429,
+        name: "主9F消毒间",
+        number: 0,
+        result: 2,
+        roomId: 550,
+        runtime: 779,
+        siteId: 20,
+        siteName: "郑州大酒店",
+        status: 5,
+        valid: 1,
+        worktime: 463,
+      }, {
+        code: "o16035552000161m8af",
+        count: 0,
+        date: "2020-10-25 00:00:00",
+        gmtcreate: "2020-10-25 00:00:00",
+        gmtmodify: "2020-10-26 01:08:31",
+        id: 2432,
+        name: "主15F消毒间",
+        number: 0,
+        result: 1,
+        roomId: 3,
+        runtime: 2450,
+        siteId: 1,
+        siteName: "郑州大酒店",
+        status: 5,
+        valid: 1,
+        worktime: 644,
+      }],
       readouts: [{
         title: '开始时间',
         dataIndex: 'begin',
@@ -148,58 +183,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    getregion().then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data.length !== 0) {
-          for (var i in res.data.data[0].children) {
-            for (var j in res.data.data[0].children[i].children) {
-              for (var k in res.data.data[0].children[i].children[j].children) {
-                if (res.data.data[0].children[i].children[j].children[k].children.length === 0) {
-                  res.data.data[0].children[i].children[j].children[k].adcode = res.data.data[0].children[i].children[j].children[k].id
-                  res.data.data[0].children[i].children[j].children[k].children = undefined
-                }
-              }
-            }
-          }
-          this.setState({
-            deviceList: res.data.data[0].children
-          })
-        } else {
-          this.setState({
-            deviceList: []
-          })
-        }
-      }
-    });
-
-    this.detectionService()
 
   }
 
-  detectionService = () => {
-    newdetectionsearch([
-      this.state.pageNum,
-      this.state.pageNumSize,
-      null,
-      null,
-      null,
-      null,
-      moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD")
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data === null) {
-          this.setState({
-            userlist: []
-          })
-        } else {
-          this.setState({
-            userlist: res.data.data.detectionVOList,
-            total: res.data.data.total
-          })
-        }
-      }
-    })
-  }
+
 
 
   onChange = (date, dateString) => {
@@ -232,37 +219,8 @@ class App extends React.Component {
 
 
 
-  //房间搜索
-  findroom = (text, record, index) => {
-    this.setState({
-      keytext: text
-    })
-    newdetectionsearch([
-      this.state.pageNum,
-      this.state.pageNumSize,
-      null,
-      null,
-      null,
-      null,
-      this.state.endtime === undefined ? moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-      text
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          userlist: res.data.data.detectionVOList,
-          total: res.data.data.total,
-        })
-      }
-    })
-  }
 
 
-  handleCancel = (e) => {
-    console.log(e);
-    this.setState({
-      historyvisible: false,
-    });
-  }
 
   state = { historyvisible: false }
   showhistory = (text, record, index) => {
@@ -301,28 +259,13 @@ class App extends React.Component {
   }
 
 
-
-  query = () => {
-    console.log(this.state.site)
-    newdetectionsearch([
-      this.state.pageNum,
-      this.state.pageNumSize,
-      this.state.cityid,
-      this.state.areaid,
-      this.state.siteId,
-      this.state.begintime === undefined ? undefined : moment(this.state.begintime).format('YYYY-MM-DD'),
-      this.state.endtime === undefined ? moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-      this.state.keytext,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          userlist: res.data.data.detectionVOList,
-          total: res.data.data.total,
-        })
-      }
+  handleCancel = (e) => {
+    console.log(e);
+    this.setState({
+      historyvisible: false,
     });
-
   }
+
 
   //设备位置选择
   addresschange = (e) => {
@@ -333,49 +276,6 @@ class App extends React.Component {
       areaid: e[1] === undefined ? null : e[1],
       siteId: e[2] === undefined ? null : e[2]
     });
-  }
-
-
-  //分页
-  pagechange = (page, num) => {
-    console.log(page, num)
-    console.log(this.state.endtime)
-    this.setState({
-      pageNum: page,
-      pageNumSize: num,
-    }, function () {
-      newdetectionsearch([
-        this.state.pageNum,
-        this.state.pageNumSize,
-        this.state.cityid,
-        this.state.areaid,
-        this.state.siteId,
-        this.state.begintime === undefined ? undefined : moment(this.state.begintime).format('YYYY-MM-DD'),
-        this.state.endtime === undefined ? moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-        this.state.keytext,
-      ]).then(res => {
-        this.setState({
-          userlist: res.data.data.detectionVOList,
-          total: res.data.data.total,
-        });
-      });
-    })
-  }
-
-
-  //重置
-  reset = () => {
-    this.setState({
-      cityid: undefined,
-      areaid: undefined,
-      siteId: undefined,
-      addresslist: [],
-      keytext: undefined,
-      begintime: undefined,
-      endtime: undefined,
-    }, function () {
-      this.detectionService()
-    })
   }
 
   //关键字录入
@@ -419,7 +319,6 @@ class App extends React.Component {
                     onChange={this.keytext}
                   />
                   <Button type="primary" onClick={this.query}>查询</Button>
-                  <Button onClick={this.reset} style={{ marginLeft: '15px' }}>重置</Button>
                 </div>
                 <Table
                   dataSource={this.state.userlist}
@@ -427,7 +326,7 @@ class App extends React.Component {
                   pagination={false}
                 />
               </div>
-              <div className="pageone">
+              {/* <div className="pageone">
                 <Pagination
                   onShowSizeChange={this.onShowSizeChange}
                   defaultCurrent={1}
@@ -436,7 +335,7 @@ class App extends React.Component {
                   hideOnSinglePage={true}
                   current={this.state.pageNum}
                 />
-              </div>
+              </div> */}
             </Card>
             <Modal
               title="本日读数"

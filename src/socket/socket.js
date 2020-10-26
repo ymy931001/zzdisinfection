@@ -65,6 +65,45 @@ class App extends React.Component {
       begintime: year + '-' + month + '-' + day,
       devicelists: [],
       devicedis: 'none',
+      userlist: [{
+        electricity: 0.015,
+        gmtcreate: "2020-10-16 10:35:17",
+        gmtmodify: "2020-10-26 14:23:54",
+        id: 2,
+        imei: "863493041049910",
+        lastOfflineTime: "2020-10-22 21:11:37",
+        ledStatus: true,
+        loadStatus: false,
+        mac: "12364",
+        onlineStatus: true,
+        power: 1.5,
+        roomId: 2,
+        roomName: "主15F消毒间",
+        sig: 13,
+        siteId: 1,
+        siteName: "郑州大酒店",
+        type: 3,
+        workStatus: true,
+      }, {
+        electricity: 0.001,
+        gmtcreate: "2020-07-16 10:46:43",
+        gmtmodify: "2020-10-26 15:02:22",
+        id: 3,
+        imei: "863493041050009",
+        lastOfflineTime: "2020-10-23 02:40:24",
+        ledStatus: true,
+        loadStatus: true,
+        mac: "12668",
+        onlineStatus: true,
+        power: 607,
+        roomId: 3,
+        roomName: "主10F消毒间",
+        sig: 11,
+        siteId: 1,
+        siteName: "郑州大酒店",
+        type: 3,
+        workStatus: true,
+      }],
       readouts: [
         //   {
         //   title: 'MAC',
@@ -241,109 +280,7 @@ class App extends React.Component {
 
   componentDidMount() {
 
-    getbasetype([
-      "board"
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          boardlist: JSON.parse(res.data.data)
-        })
-      }
-    });
 
-    andsmartdevice([
-    ]).then(res => {
-      if (res.data && res.data.resultMessage === "success") {
-        var arr = []
-        for (var i in res.data.data) {
-          arr.push({
-            "name": res.data.data[i].deviceName,
-            "imei": res.data.data[i].imei,
-            "id": res.data.data[i].socketId
-          })
-        }
-        console.log(arr)
-        this.setState({
-          devicelists: arr
-        })
-      }
-    });
-
-
-
-
-
-
-    boardlists([
-
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-
-        this.setState({
-          userlist: res.data.data
-        }, function () {
-          console.log(this.state.userlist)
-          if (res.data.data.length < 10) {
-            this.setState({
-              page: false
-            })
-          } else {
-            this.setState({
-              page: true
-            })
-          }
-        });
-      }
-    });
-
-
-
-
-    basename().then(res => {
-      // console.log(res.data.data)
-      // this.setState({
-      //   deviceList: res.data.data
-      // });
-    });
-
-
-    getregion().then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data.length !== 0) {
-          for (var i in res.data.data[0].children) {
-            for (var j in res.data.data[0].children[i].children) {
-              for (var k in res.data.data[0].children[i].children[j].children) {
-                if (res.data.data[0].children[i].children[j].children[k].children.length === 0) {
-                  res.data.data[0].children[i].children[j].children[k].adcode = res.data.data[0].children[i].children[j].children[k].id
-                  res.data.data[0].children[i].children[j].children[k].children = undefined
-                }
-              }
-            }
-          }
-          this.setState({
-            deviceList: res.data.data[0].children
-          })
-        } else {
-          this.setState({
-            deviceList: []
-          })
-        }
-      }
-    });
-
-    var arr = []
-    hotellist().then(res => {
-      console.log(res.data.data)
-      for (var i in res.data.data) {
-        arr.push({
-          'id': i,
-          'value': res.data.data[i]
-        })
-      }
-      this.setState({
-        sitelist: arr
-      });
-    });
   }
 
   onChange = (date, dateString) => {
@@ -358,30 +295,7 @@ class App extends React.Component {
     })
   }
 
-  //网点选择
-  handleChanges = (value, b) => {
-    console.log(value, b.props.children);
-    this.setState({
-      siteid: value,
-    }, function () {
-      roomlist([
-        this.state.siteid
-      ]).then(res => {
-        if (res.data && res.data.message === "success") {
-          var arr = []
-          for (var i in res.data.data) {
-            arr.push({
-              'id': res.data.data[i].id,
-              'name': res.data.data[i].name,
-            })
-          }
-          this.setState({
-            roomlist: arr
-          })
-        }
-      });
-    })
-  }
+
 
   //房间选择
   roomchange = (value) => {
@@ -425,7 +339,11 @@ class App extends React.Component {
 
 
 
-
+  yuzhiOk = () => {
+    this.setState({
+      yuzhivisible: false,
+    });
+  }
 
   handleCancel = (e) => {
     console.log(e);
@@ -525,56 +443,7 @@ class App extends React.Component {
 
 
 
-  timequery = () => {
-    readinglist([
-      this.state.socketmac,
-      this.state.begintime === undefined ? undefined : moment(this.state.begintime).format('YYYY-MM-DD'),
-      this.state.endtime === undefined ? undefined : moment(this.state.endtime).format('YYYY-MM-DD'),
-    ]).then(res => {
-      if (res.data && res.data.message === 'success') {
-        this.setState({
-          readout: res.data.data,
-        });
-        if (res.data.data.length < 10) {
-          this.setState({
-            pages: false
-          })
-        } else {
-          this.setState({
-            pages: true
-          })
-        }
-      }
-    });
-  }
 
-
-  query = () => {
-    boardlists([
-      this.state.cityid,
-      this.state.areaid,
-      this.state.siteId,
-      this.state.keytext,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        console.log(res.data.data)
-        this.setState({
-          userlist: res.data.data
-        }, function () {
-          console.log(this.state.userlist)
-          if (res.data.data.length < 10) {
-            this.setState({
-              page: false
-            })
-          } else {
-            this.setState({
-              page: true
-            })
-          }
-        });
-      }
-    });
-  }
 
 
   //设备位置选择
@@ -597,100 +466,9 @@ class App extends React.Component {
 
   //添加插座
   handleOk = () => {
-    // var arr = [{
-    //   "mac": this.state.macvalue,
-    //   "roomid": this.state.roomid,
-    //   "threshold": this.state.threshold,
-    //   "type": this.state.sockettype,
-    //   "imei": this.state.socketid,
-    // }]
-    console.log(this.state.socketid)
-    console.log(this.state.macvalue)
-    if (this.state.socketid.length === 0) {
-      message.error('请选择IMEI号')
-    } else if (!this.state.threshold) {
-      message.error('请输入额定功率')
-    } else if (!this.state.roomid) {
-      message.error('请选择所属房间')
-    } else {
-      var arr = []
-      for (var i in this.state.socketid) {
-        if (this.state.macvalue === undefined || this.state.macvalue === "" || this.state.macvalue === null) {
-          arr.push({
-            "roomid": this.state.roomid,
-            "threshold": this.state.threshold,
-            "type": "3",
-            "imei": this.state.socketid[i],
-          })
-        } else {
-          arr.push({
-            "mac": this.state.macvalue.split(',')[i],
-            "roomid": this.state.roomid,
-            "threshold": this.state.threshold,
-            "type": "3",
-            "imei": this.state.socketid[i],
-          })
-        }
-      }
-
-
-
-      insertboard(
-        JSON.stringify(arr)
-      ).then(res => {
-        if (res.data && res.data.message === "success") {
-          message.success('添加成功')
-          boardlists([
-
-          ]).then(res => {
-            if (res.data && res.data.message === "success") {
-              console.log(res.data.data)
-              localStorage.removeItem('roomid')
-              this.setState({
-                userlist: res.data.data
-              }, function () {
-                console.log(this.state.userlist)
-                if (res.data.data.length < 10) {
-                  this.setState({
-                    page: false
-                  })
-                } else {
-                  this.setState({
-                    page: true
-                  })
-                }
-              });
-            }
-          });
-
-          andsmartdevice([
-          ]).then(res => {
-            if (res.data && res.data.resultMessage === "success") {
-              var arr = []
-              for (var i in res.data.data) {
-                arr.push({
-                  "name": res.data.data[i].deviceName,
-                  "imei": res.data.data[i].imei,
-                  "id": res.data.data[i].socketId
-                })
-              }
-              console.log(arr)
-              this.setState({
-                devicelists: arr
-              })
-            }
-          });
-          this.setState({
-            visible: false,
-            socketid: []
-          })
-        }
-        if (res.data && res.data.code === -1) {
-          message.error(res.data.data)
-        }
-
-      });
-    }
+    this.setState({
+      visible: false,
+    })
 
   }
 
@@ -708,23 +486,6 @@ class App extends React.Component {
     })
   }
 
-  // //插座类型选择
-  // typechange = (value) => {
-  //   console.log(value)
-  //   this.setState({
-  //     sockettype: value
-  //   }, function () {
-  //     if (this.state.sockettype === "3") {
-  //       this.setState({
-  //         devicedis: 'block'
-  //       })
-  //     } else {
-  //       this.setState({
-  //         devicedis: 'none'
-  //       })
-  //     }
-  //   })
-  // }
 
   //设备选择
   socketchange = (value, b) => {
@@ -787,88 +548,14 @@ class App extends React.Component {
     })
   }
 
-  //修改阈值确认
-  yuzhiOk = () => {
-    patchboard([
-      this.state.modelid,
-      parseInt(this.state.thresholddown, 10),
-      parseInt(this.state.thresholdup, 10),
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        message.success("修改成功")
-        boardlists([
 
-        ]).then(res => {
-          if (res.data && res.data.message === "success") {
-            console.log(res.data.data)
-            localStorage.removeItem('roomid')
-            this.setState({
-              userlist: res.data.data
-            }, function () {
-              console.log(this.state.userlist)
-              if (res.data.data.length < 10) {
-                this.setState({
-                  page: false
-                })
-              } else {
-                this.setState({
-                  page: true
-                })
-              }
-            });
-          }
-        });
-        this.setState({
-          yuzhivisible: false,
-        });
-      }
-      if (res.data && res.data.code === -1) {
-        if (res.data && res.data.data === "device is offline") {
-          message.error("设备离线")
-        } else {
-          message.error("阈值填写错误")
-        }
-      }
-    });
-  }
 
 
   //删除插座
   deleteOk = (text, record, index) => {
-    console.log(this.state.socketid)
-    delectboard([
-      this.state.socketid,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        message.success("删除插座成功");
-        this.setState({
-          deletevisible: false,
-        })
-        boardlists([
-
-        ]).then(res => {
-          if (res.data && res.data.message === "success") {
-            console.log(res.data.data)
-            this.setState({
-              userlist: res.data.data
-            }, function () {
-              console.log(this.state.userlist)
-              if (res.data.data.length < 10) {
-                this.setState({
-                  page: false
-                })
-              } else {
-                this.setState({
-                  page: true
-                })
-              }
-            });
-          }
-        });
-      } else {
-        message.error(res.data.data)
-      }
-    });
+    this.setState({
+      deletevisible: false,
+    })
   }
 
   //关键字录入
@@ -878,39 +565,6 @@ class App extends React.Component {
     })
   }
 
-  //重置
-  reset = () => {
-    this.setState({
-      cityid: undefined,
-      areaid: undefined,
-      siteId: undefined,
-      addresslist: [],
-      keytext: undefined,
-    }, function () {
-      boardlists([
-        this.state.cityid,
-        this.state.areaid,
-        this.state.siteId,
-        this.state.keytext,
-      ]).then(res => {
-        if (res.data && res.data.message === "success") {
-          this.setState({
-            userlist: res.data.data
-          }, function () {
-            if (res.data.data.length < 10) {
-              this.setState({
-                page: false
-              })
-            } else {
-              this.setState({
-                page: true
-              })
-            }
-          });
-        }
-      });
-    })
-  }
 
 
   render() {
@@ -956,7 +610,6 @@ class App extends React.Component {
                   onChange={this.keytext}
                 />
                 <Button type="primary" onClick={this.query}>查询</Button>
-                <Button onClick={this.reset} style={{ marginLeft: '15px' }}>重置</Button>
                 {/* <Button type="primary" style={{ marginLeft: '20px' }}>
                   <Link to="/app/withoutsocket">未绑定插座列表</Link>
                 </Button> */}

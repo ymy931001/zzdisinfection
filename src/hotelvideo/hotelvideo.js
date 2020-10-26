@@ -74,8 +74,45 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoListDataSource: [],
-      videoListDataSources: [],
+      videoListDataSource: [{
+        code: "o16035552000161m8af",
+        count: 0,
+        date: "2020-10-25 00:00:00",
+        gmtcreate: "2020-10-25 00:00:00",
+        gmtmodify: "2020-10-26 01:08:31",
+        id: 2432,
+        name: "主15F消毒间",
+        number: 0,
+        pictureAddress: "/mnt/detection/resource/3/to/主15F消毒间-2020-10-25.zip",
+        result: 1,
+        roomId: 3,
+        runtime: 2450,
+        siteId: 1,
+        siteName: "郑州大酒店",
+        status: 5,
+        valid: 1,
+        videoAddress: "/mnt/detection/resource/3/video/主15F消毒间-2020-10-25.mp4",
+        worktime: 644,
+      }, {
+        code: "z1603468800164ov29q",
+        count: 0,
+        date: "2020-10-24 00:00:00",
+        gmtcreate: "2020-10-24 00:00:00",
+        gmtmodify: "2020-10-25 01:07:28",
+        id: 2413,
+        name: "主9F消毒间",
+        number: 0,
+        pictureAddress: "/mnt/detection/resource/1/to/主9F消毒间-2020-10-24.zip",
+        result: 1,
+        roomId: 1,
+        runtime: 1241,
+        siteId: 1,
+        siteName: "郑州大酒店",
+        status: 5,
+        valid: 1,
+        videoAddress: "/mnt/detection/resource/1/video/主9F消毒间-2020-10-24.mp4",
+        worktime: 453,
+      }],
       msg: true,
       site: undefined,
       name: undefined,
@@ -326,81 +363,14 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    localStorage.setItem('imgopen', true)
-    console.log(localStorage.getItem("addresslist"))
 
-    getregion().then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data.length !== 0) {
-          for (var i in res.data.data[0].children) {
-            for (var j in res.data.data[0].children[i].children) {
-              for (var k in res.data.data[0].children[i].children[j].children) {
-                if (res.data.data[0].children[i].children[j].children[k].children.length === 0) {
-                  res.data.data[0].children[i].children[j].children[k].adcode = res.data.data[0].children[i].children[j].children[k].id
-                  res.data.data[0].children[i].children[j].children[k].children = undefined
-                }
-              }
-            }
-          }
-          this.setState({
-            deviceList: res.data.data[0].children
-          })
-        } else {
-          this.setState({
-            deviceList: []
-          })
-        }
-      }
-    });
-
-    detectionvison([
-      1192
-    ]).then(res => {
-
-    })
-
-    // hotellist().then(res => {
-    //   var arr = []
-    //   for (var i in res.data.data) {
-    //     arr.push({
-    //       'id': i,
-    //       'value': res.data.data[i]
-    //     })
-    //   }
-    //   localStorage.setItem('sitelist', JSON.stringify(arr))
-    // });
-
-    this.detectionService()
   }
 
   onChange = (date, dateString) => {
     console.log(date, dateString);
   }
 
-  detectionService = () => {
-    newdetectionsearch([
-      this.state.pageNum,
-      this.state.pageNumSize,
-      null,
-      null,
-      null,
-      null,
-      moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD")
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data === null) {
-          this.setState({
-            videoListDataSource: []
-          })
-        } else {
-          this.setState({
-            videoListDataSource: res.data.data.detectionVOList,
-            total: res.data.data.total,
-          })
-        }
-      }
-    })
-  }
+
 
   findpicture = (text, record, index) => {
     imageExist([
@@ -426,35 +396,7 @@ class App extends React.Component {
 
 
 
-  //房间搜索
-  findroom = (text, record, index) => {
-    this.setState({
-      keytext: text
-    })
-    newdetectionsearch([
-      this.state.pageNum,
-      this.state.pageNumSize,
-      null,
-      null,
-      null,
-      null,
-      this.state.endtime === undefined ? moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-      text
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data === null) {
-          this.setState({
-            videoListDataSource: []
-          })
-        } else {
-          this.setState({
-            videoListDataSource: res.data.data.detectionVOList,
-            total: res.data.data.total,
-          })
-        }
-      }
-    })
-  }
+
 
 
   findvideo(text, record, index) {
@@ -499,22 +441,6 @@ class App extends React.Component {
   }
 
 
-  motionclick = (text, record, index) => {
-    console.log(JSON.parse(text))
-    var arr = []
-    for (var i in JSON.parse(text)) {
-      if (JSON.parse(text)[i].confident != undefined) { //eslint-disable-line
-        arr.push(
-          JSON.parse(text)[i]
-        )
-      }
-    }
-    this.setState({
-      imgid: record.id,
-      motionvisible: true,
-      motiondata: arr
-    })
-  }
 
   //设备位置选择
   addresschange = (e) => {
@@ -564,51 +490,9 @@ class App extends React.Component {
     });
   }
 
-  modelone = (text, record, index) => {
-    getchaincode([
-      record.txid,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          pleadingvisible: true,
-          txid: text,
-          blockhash: res.data.data.blockhash,
-          blocknumber: res.data.data.blocknumber,
-          blocksize: res.data.data.blocksize,
-          blocktxcount: res.data.data.blocktxcount,
-          date: res.data.data.date,
-          preblockhash: res.data.data.preblockhash,
-        })
-      }
-    });
-  }
 
 
-  query = () => {
-    newdetectionsearch([
-      this.state.pageNum,
-      this.state.pageNumSize,
-      this.state.cityid,
-      this.state.areaid,
-      this.state.siteId,
-      this.state.begintime === undefined ? undefined : moment(this.state.begintime).format('YYYY-MM-DD'),
-      this.state.endtime === undefined ? moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-      this.state.keytext,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data === null) {
-          this.setState({
-            videoListDataSource: []
-          })
-        } else {
-          this.setState({
-            videoListDataSource: res.data.data.detectionVOList,
-            total: res.data.data.total,
-          })
-        }
-      }
-    })
-  }
+
 
   //工作时长详情
   state = { historyvisible: false }
@@ -738,57 +622,6 @@ class App extends React.Component {
   }
 
 
-  //分页
-
-  pagechange = (page, num) => {
-    console.log(page, num)
-    console.log(this.state.endtime)
-    this.setState({
-      pageNum: page,
-      pageNumSize: num,
-    }, function () {
-      newdetectionsearch([
-        this.state.pageNum,
-        this.state.pageNumSize,
-        this.state.cityid,
-        this.state.areaid,
-        this.state.siteId,
-        this.state.begintime === undefined ? undefined : moment(this.state.begintime).format('YYYY-MM-DD'),
-        this.state.endtime === undefined ? moment(new Date() - 3600 * 24 * 1000).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-        this.state.keytext,
-      ]).then(res => {
-        if (res.data && res.data.message === "success") {
-          if (res.data.data === null) {
-            this.setState({
-              videoListDataSource: []
-            })
-          } else {
-            this.setState({
-              videoListDataSource: res.data.data.detectionVOList,
-              total: res.data.data.total,
-            })
-          }
-        }
-      })
-
-    })
-  }
-
-  //重置
-  reset = () => {
-    this.setState({
-      cityid: undefined,
-      areaid: undefined,
-      siteId: undefined,
-      addresslist: [],
-      keytext: undefined,
-      begintime: undefined,
-      endtime: undefined,
-    }, function () {
-      this.detectionService()
-    })
-  }
-
   //关键字录入
   keytext = (e) => {
     this.setState({
@@ -844,8 +677,7 @@ class App extends React.Component {
                     value={this.state.keytext}
                     onChange={this.keytext}
                   />
-                  <Button type="primary" onClick={this.query}>查询</Button>
-                  <Button onClick={this.reset} style={{ marginLeft: '15px' }}>重置</Button>
+                  <Button type="primary">查询</Button>
                 </div>
               </div>
               <div style={{ marginTop: 20 }}>
@@ -854,16 +686,6 @@ class App extends React.Component {
                   columns={this.nodeInfoTableColumns}
                   pagination={false}
                   onChange={this.tablechange}
-                />
-              </div>
-              <div className="pageone" style={{ textAlign: 'right', marginTop: '10px' }}>
-                <Pagination
-                  onShowSizeChange={this.onShowSizeChange}
-                  defaultCurrent={1}
-                  onChange={this.pagechange}
-                  total={this.state.total}
-                  hideOnSinglePage={true}
-                  current={this.state.pageNum}
                 />
               </div>
               <Modal

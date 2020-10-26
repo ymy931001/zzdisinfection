@@ -43,78 +43,6 @@ class App extends React.Component {
   componentDidMount() {
 
 
-    rolelist([
-
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        var arr = []
-        for (var i in res.data.data) {
-          arr.push({
-            "value": res.data.data[i].namezh,
-            "id": res.data.data[i].id,
-          })
-        }
-        this.setState({
-          rolelist: arr
-        });
-      }
-    });
-
-
-    var arr = []
-    hotellist().then(res => {
-      console.log(res.data.data)
-      for (var i in res.data.data) {
-        arr.push({
-          'id': i,
-          'value': res.data.data[i]
-        })
-      }
-      this.setState({
-        sitelist: arr
-      });
-    });
-
-    var arrs = []
-    getAreaMap().then(res => {
-      if (res.data && res.data.message === "success") {
-        for (var i in res.data.data) {
-          arrs.push({
-            'id': i,
-            'name': res.data.data[i]
-          })
-        }
-        this.setState({
-          arealist: arrs
-        })
-      }
-    });
-
-    // if (localStorage.getItem('type') === '0') {
-    //   this.setState({
-    //     superdis: 'block',
-    //     typelist: [{
-    //       'id': '0',
-    //       'name': '超级管理员',
-    //     }, {
-    //       'id': '1',
-    //       'name': '管理员',
-    //     }, {
-    //       'id': '2',
-    //       'name': '酒店管理员',
-    //     }]
-    //   })
-    // } else {
-    //   this.setState({
-    //     typelist: [{
-    //       'id': '1',
-    //       'name': '管理员',
-    //     }, {
-    //       'id': '2',
-    //       'name': '酒店管理员',
-    //     }]
-    //   })
-    // }
   }
 
   handleChanges = (value) => {
@@ -133,53 +61,9 @@ class App extends React.Component {
 
 
   submit = () => {
-    let realname = document.getElementById('realname').value;
-    let username = document.getElementById('username').value;
-    let password = document.getElementById('password').value;
-    let email = document.getElementById('email').value;
-    // var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
-    var reg = /^([a-zA-Z]|[0-9])(\w)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
-    var telrule = /^[1][3,4,5,7,8][0-9]{9}$/;
-    var namerule = /^[\u4e00-\u9fa5]+$/;
-    if (!namerule.test(realname)) {
-      message.error('请输入您的真实姓名');
-    }
-    else if (!telrule.test(this.state.telphone)) {
-      message.error('您输入的手机号码不合法');
-    }
-    else if (!reg.test(email)) {
-      message.error('您输入的邮箱不合法');
-    }
-    else if (username === "") {
-      message.error('请输入用户名');
-    }
-    else if (password === "") {
-      message.error('请输入密码');
-    } else {
-      adduser([
-        realname,
-        this.state.telphone,
-        username,
-        password,
-        this.state.siteid,
-        this.state.type,
-        email,
-        this.state.areaid,
-        this.state.remark,
-      ]).then(res => {
-        if (res.data && res.data.message === 'success') {
-          message.success('账号创建成功');
-          setTimeout(() => {
-            window.location.href = "/app/user";
-          }, 1000);
-        } else if (res.data && res.data.code === 1222) {
-          message.error('该用户名已存在，请重新输入')
-        } else {
-          message.error(res.data.data)
-        }
-      });
-    }
-
+    setTimeout(() => {
+      window.location.href = "/app/user";
+    }, 1000);
   }
 
   ions = (value) => {

@@ -35,7 +35,43 @@ class App extends React.Component {
     this.state = {
       videoListDataSource: [],
       device_ip: null,
-      sitelist: [],
+      sitelist: [{
+        abnormalRoomCount: 4,
+        // abnormalRooms: ["7楼洗消间", "6楼洗消间", "8楼洗消间", "9楼洗消间"],
+        date: "2020-10-25 00:00:00",
+        // detail: [{ "date": 1603555200000, "id": 2453, "name": "7楼洗消间", "readingVOS": [], "result": 2, "runtime": 0, "status": 5, "timePiars": [{ "end": 1603609180192, "start": 1603609083234 }, { "end": 1603638637113, "start": 1603638607082 }], "worktime": 126 }, { "date": 1603555200000, "id": 2454, "name": "6楼洗消间", "readingVOS": [], "result": 2, "runtime": 0, "status": 5, "timePiars": [{ "end": 1603586349470, "start": 1603586346467 }], "worktime": 3 }, { "date": 1603555200000, "id": 2473, "name": "10楼洗消间", "readingVOS": [], "result": 0, "runtime": 0, "status": 5, "worktime": 0 }, { "date": 1603555200000, "id": 2430, "name": "8楼洗消间", "readingVOS": [], "result": 2, "runtime": 0, "status": 5, "timePiars": [{ "end": 1603607989562, "start": 1603607808629 }], "worktime": 180 }, { "date": 1603555200000, "id": 2431, "name": "9楼洗消间", "readingVOS": [], "result": 2, "runtime": 0, "status": 5, "timePiars": [{ "end": 1603607386450, "start": 1603607367331 }, { "end": 1603613699717, "start": 1603613597805 }], "worktime": 120 }],
+        housekeeping: 0,
+        id: 294,
+        qualifiedRoomCount: 0,
+        rate: 0,
+        roomCount: 2,
+        runtime: 0,
+        siteId: 23,
+        siteName: "郑州大酒店",
+        type: 0,
+        unqualifiedRoomCount: 2,
+        unqualifiedRooms: ["主15F消毒间", "主9F消毒间",],
+        workCount: 0,
+        worktime: 429,
+      }, {
+        abnormalRoomCount: 4,
+        // abnormalRooms: ["7楼洗消间", "6楼洗消间", "8楼洗消间", "9楼洗消间"],
+        date: "2020-10-24 00:00:00",
+        // detail: [{ "date": 1603555200000, "id": 2453, "name": "7楼洗消间", "readingVOS": [], "result": 2, "runtime": 0, "status": 5, "timePiars": [{ "end": 1603609180192, "start": 1603609083234 }, { "end": 1603638637113, "start": 1603638607082 }], "worktime": 126 }, { "date": 1603555200000, "id": 2454, "name": "6楼洗消间", "readingVOS": [], "result": 2, "runtime": 0, "status": 5, "timePiars": [{ "end": 1603586349470, "start": 1603586346467 }], "worktime": 3 }, { "date": 1603555200000, "id": 2473, "name": "10楼洗消间", "readingVOS": [], "result": 0, "runtime": 0, "status": 5, "worktime": 0 }, { "date": 1603555200000, "id": 2430, "name": "8楼洗消间", "readingVOS": [], "result": 2, "runtime": 0, "status": 5, "timePiars": [{ "end": 1603607989562, "start": 1603607808629 }], "worktime": 180 }, { "date": 1603555200000, "id": 2431, "name": "9楼洗消间", "readingVOS": [], "result": 2, "runtime": 0, "status": 5, "timePiars": [{ "end": 1603607386450, "start": 1603607367331 }, { "end": 1603613699717, "start": 1603613597805 }], "worktime": 120 }],
+        housekeeping: 60,
+        id: 294,
+        qualifiedRoomCount: 0,
+        rate: 0,
+        roomCount: 2,
+        runtime: 0,
+        siteId: 23,
+        siteName: "郑州大酒店",
+        type: 0,
+        unqualifiedRoomCount: 2,
+        unqualifiedRooms: ["主15F消毒间", "主9F消毒间",],
+        workCount: 0,
+        worktime: 329,
+      }],
       allhotel: [],
       typenone: "inline-block",
       notaddress: [],
@@ -105,7 +141,7 @@ class App extends React.Component {
         dataIndex: "unqualifiedRoomCount",
         render: (text, record, index) => {
           if (record.unqualifiedRooms) {
-            if (JSON.parse(record.unqualifiedRooms).length === 0) {
+            if (record.unqualifiedRooms.length === 0) {
               return (
                 <div>
                   无
@@ -114,7 +150,7 @@ class App extends React.Component {
             } else {
               return (
                 <div>
-                  <Tooltip placement="topLeft" title={JSON.parse(record.unqualifiedRooms).join(',')}>
+                  <Tooltip placement="topLeft" title={record.unqualifiedRooms.join(',')}>
                     {/* <Link to="/app/hotelvideo" > */}
                     <span>
                       <a onClick={() => this.notstandard(text, record, index)}
@@ -174,41 +210,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem("type") === "2") {
-      this.setState({
-        typenone: 'none'
-      })
-    }
-
-
-    siteStatistics([
-
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        console.log(res.data.data)
-        this.setState({
-          sitelist: res.data.data
-        })
-      }
-    });
-
-
-    sitelist([]).then(res => {
-      if (res.data && res.data.message === "success") {
-        var arr = []
-        for (var i in res.data.data) {
-          if (res.data.data[i].quantity != 0) { //eslint-disable-line
-            arr.push({
-              'id': res.data.data[i].id,
-              'name': res.data.data[i].sitename
-            })
-          }
-        }
-        this.setState({
-          allhotel: arr
-        })
-      }
-    });
 
 
   }
@@ -266,17 +267,6 @@ class App extends React.Component {
   }
 
 
-  sitechange = (text, record, index) => {
-    siteStatistics([
-      record.siteId
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          sitelist: res.data.data
-        })
-      }
-    });
-  }
 
 
   //时间选择
@@ -301,32 +291,9 @@ class App extends React.Component {
       });
     }
   }
-  reset = () => {
-    siteStatistics([
 
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          sitelist: res.data.data,
-          hotelname: undefined,
-        })
-      }
-    });
-  }
 
-  query = () => {
-    siteStatistics([
-      this.state.hotelname,
-      this.state.begintime,
-      this.state.endtime,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          sitelist: res.data.data
-        })
-      }
-    });
-  }
+
 
   //选择酒店
   hotelchange = (value) => {
@@ -359,7 +326,7 @@ class App extends React.Component {
                     onChange={this.hotelchange}
                     value={this.state.hotelname}
                   >
-                    {options}
+                    <Option key={1}  >郑州大酒店</Option>
                   </Select>
                   时间&nbsp;:
                     <RangePicker

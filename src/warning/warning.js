@@ -37,6 +37,44 @@ class App extends React.Component {
       otaModalVisible: null,
       begintime: undefined,
       endtime: undefined,
+      warningListDataSource: [{
+        date: "2020-09-08 00:00:00",
+        gmtcreate: "2020-10-15 02:00:00",
+        id: 100,
+        message: "插座长期离线",
+        roomId: 4,
+        roomName: "主15F消毒间",
+        siteId: 1,
+        siteName: "郑州大酒店",
+        status: false,
+        type: 1,
+      }, {
+        date: "2020-09-08 00:00:00",
+        gmtcreate: "2020-10-15 02:00:00",
+        id: 100,
+        message: "无杯具提交记录",
+        roomId: 4,
+        roomName: "主15F消毒间",
+        siteId: 1,
+        siteName: "郑州大酒店",
+        status: false,
+        type: 1,
+      }],
+      historydata: [{
+        date: "2020-09-09 00:00:00",
+        duration: 93,
+        gmtcreate: "2020-1009 02:00:00",
+        id: 97,
+        message: "插座长期离线",
+        object: "863493041067409",
+        remark: "信号不好",
+        roomId: 2,
+        roomName: "主9F消毒间",
+        siteId: 1,
+        siteName: "郑州大酒店",
+        status: true,
+        type: 3,
+      }]
     };
   }
   onCollapse = collapsed => {
@@ -50,80 +88,18 @@ class App extends React.Component {
   componentDidMount() {
     this.getalarm()
 
-    getregion().then(res => {
-      if (res.data && res.data.message === "success") {
-        if (res.data.data.length !== 0) {
-          for (var i in res.data.data[0].children) {
-            for (var j in res.data.data[0].children[i].children) {
-              for (var k in res.data.data[0].children[i].children[j].children) {
-                if (res.data.data[0].children[i].children[j].children[k].children.length === 0) {
-                  res.data.data[0].children[i].children[j].children[k].adcode = res.data.data[0].children[i].children[j].children[k].id
-                  res.data.data[0].children[i].children[j].children[k].children = undefined
-                }
-              }
-            }
-          }
-          this.setState({
-            deviceList: res.data.data[0].children
-          })
-        } else {
-          this.setState({
-            deviceList: []
-          })
-        }
-
-
-      }
-    });
-
   }
 
 
   getalarm = () => {
-    getalarm([
 
-    ]).then(res => {
-      var arr = []
-      var newarr = []
-      for (var i in res.data.data) {
-        if (res.data.data[i].status === false) {
-          arr.push(res.data.data[i])
-        } else {
-          newarr.push(res.data.data[i])
-        }
-      }
-      this.setState({
-        warningListDataSource: arr,
-        historydata: newarr,
-      }, function () {
-        if (arr.length < 10) {
-          this.setState({
-            page: false
-          })
-        } else {
-          this.setState({
-            page: true
-          })
-        }
-        if (newarr.length < 10) {
-          this.setState({
-            pages: false
-          })
-        } else {
-          this.setState({
-            pages: true
-          })
-        }
-      })
-    });
   }
 
 
   //打开负责人说明
   explain = (text, record, index) => {
     this.setState({
-      describevisible: true,
-      alarmid: record.id
+      describevisible: true
     })
   }
 
@@ -137,18 +113,9 @@ class App extends React.Component {
   }
 
   explainok = () => {
-    addalarmRemark([
-      this.state.alarmid,
-      this.state.remark,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        message.success('添加成功')
-        this.setState({
-          describevisible: false,
-        })
-        this.getalarm()
-      }
-    });
+    this.setState({
+      describevisible: false,
+    })
   }
 
   //添加说明
@@ -170,66 +137,6 @@ class App extends React.Component {
     });
   }
 
-  //查询
-  query = () => {
-    getalarm([
-      this.state.cityid,
-      this.state.areaid,
-      this.state.siteId,
-      this.state.begintime === undefined ? undefined : moment(this.state.begintime).format('YYYY-MM-DD'),
-      this.state.endtime === undefined ? moment(new Date()).format("YYYY-MM-DD") : moment(this.state.endtime).format('YYYY-MM-DD'),
-    ]).then(res => {
-      var arr = []
-      var newarr = []
-      for (var i in res.data.data) {
-        if (res.data.data[i].status === false) {
-          arr.push(res.data.data[i])
-        } else {
-          newarr.push(res.data.data[i])
-        }
-      }
-      this.setState({
-        warningListDataSource: arr,
-        historydata: newarr,
-      }, function () {
-        if (arr.length < 10) {
-          this.setState({
-            page: false
-          })
-        } else {
-          this.setState({
-            page: true
-          })
-        }
-        if (newarr.length < 10) {
-          this.setState({
-            pages: false
-          })
-        } else {
-          this.setState({
-            pages: true
-          })
-        }
-      })
-    });
-  }
-
-
-
-  //重置
-  reset = () => {
-    this.setState({
-      cityid: undefined,
-      areaid: undefined,
-      siteId: undefined,
-      addresslist: [],
-      keytext: undefined,
-      begintime: undefined,
-      endtime: undefined,
-    }, function () {
-      this.getalarm()
-    })
-  }
 
   //时间选择
   timeonChange = (value, dateString) => {

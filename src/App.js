@@ -117,7 +117,7 @@ class App extends Component {
             if (arrs[i].id === 6 || arrs[i].id === 7) {
               data4.push(arrs[i])
             }
-            if (arrs[i].id === 2 || arrs[i].id === 80 || arrs[i].id === 74) {
+            if (arrs[i].id === 2 || arrs[i].id === 74) {
               data5.push(arrs[i])
             }
             if (arrs[i].id === 10) {
@@ -196,12 +196,12 @@ class App extends Component {
                 onOpenChange={this.onOpenChange}
                 selectedKeys={[localStorage.getItem("menuid")]}
               >
-                <Menu.Item key="0"
+                {/* <Menu.Item key="0"
                 >
                   <a href={"http://datav.aliyuncs.com/share/95aef6059199ee86ef8610153005e68e?Authorization=" + localStorage.getItem('authorization')} style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
                     <Icon type="dashboard" /><span>仪表盘</span>
                   </a>
-                </Menu.Item>
+                </Menu.Item> */}
 
 
                 <SubMenu
@@ -346,14 +346,14 @@ class App extends Component {
 
 
 
-                <Menu.Item key="59"
+                {/* <Menu.Item key="59"
                   style={{ display: this.state.lsdis }}
                 >
                   <Link to="/app/examine">
                     <PushpinOutlined />
                     <span>审核管理</span>
                   </Link>
-                </Menu.Item>
+                </Menu.Item> */}
 
                 <SubMenu
                   key="sub3"
@@ -369,37 +369,6 @@ class App extends Component {
                
                 </SubMenu>
 
-
-
-                {/* <SubMenu
-                  key="sub11"
-                  title={
-                    <span>
-                      <CloudOutlined />
-                      <span>系统管理</span>
-                    </span>
-                  }
-                  style={{ display: this.state.lsdis }}
-                >
-                  <Menu.Item key="110"
-                  >
-                    <Link to="/app/platform">
-                      <span>平台管理</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="111"
-                  >
-                    <Link to="/app/interfaces">
-                      <span>接口管理</span>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="112"
-                  >
-                    <Link to="/app/sederweimalist">
-                      <span>二维码管理</span>
-                    </Link>
-                  </Menu.Item>
-                </SubMenu> */}
               </Menu>
             </Sider>
 

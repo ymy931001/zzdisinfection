@@ -101,6 +101,16 @@ class App extends React.Component {
       device_ip: null,
       typenone: "inline-block",
       selectedRowKeys: [],
+      sitelist: [{
+        'sitename': "郑州大酒店",
+        "adminName": '张三',
+        "phone": "15355497220",
+        "boardQuantity": 16,
+        "cameraQuantity": 11,
+        "cleanerQuantity": 2,
+        "address": '河南省郑州市二七区兴隆街8号',
+        "gmtcreate": "2020-10-25 17:55:40"
+      }]
     };
 
 
@@ -287,7 +297,6 @@ class App extends React.Component {
       {
         title: "酒店名称",
         dataIndex: "sitename",
-        editable: true,
         render: (text, record, index) => {
           return (
             <div onClick={() => this.toroom(text, record, index)} style={{ cursor: 'pointer' }}>
@@ -299,7 +308,6 @@ class App extends React.Component {
       {
         title: "负责人姓名",
         dataIndex: "adminName",
-        editable: true,
         render: (text, record, index) => {
           if (text === null) {
             return (
@@ -319,7 +327,6 @@ class App extends React.Component {
       {
         title: "联系电话",
         dataIndex: "phone",
-        editable: true,
         render: (text, record, index) => {
           if (text === null) {
             return (
@@ -451,27 +458,9 @@ class App extends React.Component {
         title: '操作',
         dataIndex: 'id',
         render: (text, record, index) => {
-          const editable = this.isEditing(record);
           return (
             <div>
-              {editable ? (
-                <span>
-                  <EditableContext.Consumer>
-                    {form => (
-                      <a
-
-                        onClick={() => this.save(form, record.key, text)}
-                        style={{ marginRight: 8 }}
-                      >
-                        保存
-                      </a>
-                    )}
-                  </EditableContext.Consumer>
-                  <a onClick={() => this.cancel(record.key, text)}>取消</a>
-                </span>
-              ) : (
-                  <a onClick={() => this.edit(text, record, index)}><img src={require('./edit.png')} alt="" /></a>
-                )}
+              <a onClick={() => this.edit(text, record, index)}><img src={require('./edit.png')} alt="" /></a>
               <span style={{ marginLeft: '20px' }} onClick={() => this.onDelete(text, record, index)}>
                 <a><img src={require('./delete.png')} alt="" /></a>
               </span>
@@ -495,25 +484,7 @@ class App extends React.Component {
         typenone: 'none'
       })
     }
-    sitelist([
 
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          sitelist: res.data.data,
-        }, function () {
-          if (res.data.data.length < 10) {
-            this.setState({
-              page: false
-            })
-          } else {
-            this.setState({
-              page: true
-            })
-          }
-        });
-      }
-    });
 
     getallRegion([
       "330000"
@@ -635,55 +606,7 @@ class App extends React.Component {
   }
 
 
-  save(form, key, text) {
-    form.validateFields((error, row) => {
-      if (error) {
-        return;
-      }
-      const newData = [...this.state.sitelist];
-      console.log(newData)
-      const index = newData.findIndex(item => key === item.key);
-      console.log(newData[index])
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        this.setState({
-          sitelist: newData, editingKey: '',
-          phone: newData[index].phone,
-          adminName: newData[index].adminName,
-          sitename: newData[index].sitename
-        }, () => {
-          putsite([
-            this.state.sitename,
-            this.state.adminName,
-            this.state.phone,
-            this.state.editingid,
-          ]).then(res => {
-            if (res.data && res.data.message === 'success') {
-              message.success("信息修改成功");
-              sitelist([
 
-              ]).then(res => {
-                if (res.data && res.data.message === 'success') {
-                  this.setState({
-                    sitelist: res.data.data,
-                  });
-                }
-              });
-            }
-          });
-
-        });
-
-      } else {
-        newData.push(this.state.userlist);
-        this.setState({ userlist: newData, editingKey: '' });
-      }
-    });
-  }
   //区域地址
   addresschange = (e) => {
     console.log(e)
@@ -714,21 +637,7 @@ class App extends React.Component {
 
   //删除单位
   deleteOk = (text, record, index) => {
-    console.log(record)
-    deletesite([
-      this.state.hotelid,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        message.success("单位删除成功");
-        const dataSource = [...this.state.sitelist];
-        this.setState({
-          deletevisible: false,
-          sitelist: dataSource.filter(item => item.id !== this.state.hotelid),
-        });
-      } else {
-        message.error(res.data.data)
-      }
-    });
+
   }
 
   //房间跳转
@@ -742,26 +651,6 @@ class App extends React.Component {
   //搜索
   onsearch = () => {
     console.log(111)
-    sitelist([
-      this.state.searchname
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          sitelist: res.data.data
-        }, function () {
-          if (res.data.data.length < 10) {
-            this.setState({
-              page: false
-            })
-          } else {
-            this.setState({
-              page: true
-            })
-          }
-        });
-      }
-    });
-
   }
 
   //打开许可证
@@ -772,38 +661,14 @@ class App extends React.Component {
     })
   }
 
-  // //打开健康证
-  // openhealthcard = () => {
-  //   this.setState({
-  //     xukevisible: true,
-  //   })
-  // }
+
 
   //打开保洁员管理抽屉
   opencleanerlist = (text, record, index) => {
     this.setState({
       siteid: record.id,
+      cleanervisible: true,
     })
-    cleanerlist([
-      record.id
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          cleanerdata: res.data.data,
-          cleanervisible: true,
-        }, function () {
-          if (res.data.data.length < 10) {
-            this.setState({
-              page: false
-            })
-          } else {
-            this.setState({
-              page: true
-            })
-          }
-        });
-      }
-    });
   }
 
   //关闭抽屉
@@ -831,31 +696,10 @@ class App extends React.Component {
 
   //打开二维码弹窗
   lookerweima = (text, record, index) => {
-    // this.createerweimas()
-    bindQRcode([
-      record.id,
-      null,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        for (var i in res.data.data) {
-          res.data.data[i].key = res.data.data[i].id
-        }
-        this.setState({
-          erweimadata: res.data.data,
-          openerweima: true,
-        }, function () {
-          if (res.data.data.length < 10) {
-            this.setState({
-              erweimapage: false
-            })
-          } else {
-            this.setState({
-              erweimapage: true
-            })
-          }
-        });
-      } 
-    });
+    this.setState({
+      erweimadata: [],
+      openerweima: true,
+    })
   }
 
   //下载二维码
@@ -907,19 +751,10 @@ class App extends React.Component {
 
   //打开消毒间列表
   openroomlist = (text, record, index) => {
-    getsterilizer([
-      record.id
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        this.setState({
-          roomvisible: true,
-          roomdata: res.data.data
-        })
-      } else {
-        message.error('暂无数据')
-      }
-    });
-
+    this.setState({
+      roomvisible: true,
+      roomdata: []
+    })
   }
 
 
@@ -1065,40 +900,6 @@ class App extends React.Component {
 
 
 
-  //删除保洁员
-  deleteclearok = (text, record, index) => {
-    deletecleaner([
-      this.state.cleanerId,
-    ]).then(res => {
-      if (res.data && res.data.message === "success") {
-        message.success("删除成功");
-        const dataSource = [...this.state.cleanerdata];
-        this.setState({
-          deleteclear: false,
-          cleanerdata: dataSource.filter(item => item.id !== this.state.cleanerId),
-        });
-        sitelist([
-
-        ]).then(res => {
-          if (res.data && res.data.message === "success") {
-            this.setState({
-              sitelist: res.data.data
-            }, function () {
-              if (res.data.data.length < 10) {
-                this.setState({
-                  page: false
-                })
-              } else {
-                this.setState({
-                  page: true
-                })
-              }
-            });
-          }
-        });
-      }
-    });
-  }
 
 
   render() {
@@ -1211,8 +1012,9 @@ class App extends React.Component {
                 <Table
                   dataSource={this.state.sitelist}
                   columns={nodeInfoTableColumns}
-                  pagination={this.state.page}
+                  pagination={false}
                   components={components}
+
                 />
               </div>
             </Card>
@@ -1355,6 +1157,7 @@ class App extends React.Component {
                 dataSource={this.state.cleanerdata}
                 columns={cleanercolumn}
                 components={components}
+                pagination={false}
                 bordered
               />
             </div>
