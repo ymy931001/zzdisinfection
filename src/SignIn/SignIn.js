@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Button, Input, message} from "antd";
-import { login,  hotellist} from "../axios";
+import { Button, Input, message } from "antd";
+import { login, hotellist } from "../axios";
 import { createForm } from 'rc-form';
 import "./SignIn.css";
 
@@ -17,47 +17,19 @@ class SignIn extends Component {
 
   }
   componentDidMount = () => {
-    // gettoken([
-    //   "201a0f3a8c58471787b315108ae35950",
-    //   "1a52b64a6506e52cec442fe7c013fada"
-    // ]).then(res => {
-    //   // if (res.data.message === 'success') {
-    //   console.log(res)
-    //   // console.log(res.data.httpSession)
-    //   // console.log(res.response)
-    //   // }
-    // })
 
-    // getvideolist([
-    // ]).then(res => {
-    //   // if (res.data.message === 'success') {
-    //   console.log(res)
-    //   // console.log(res.data.httpSession)
-    //   // console.log(res.response)
-    //   // }
-    // })
   };
 
 
   logindown = (e) => {
     if (e.keyCode === 13) {
       login([
-        this.state.userID,
-        this.state.password
+        "xk",
+        "Tb123456"
       ]).then(res => {
         if (res.data.message === 'success') {
           console.log(res)
           message.success("登陆成功");
-          // accountsession([
-
-          // ]).then(res => {
-          //   // if (res.data.message === 'success') {
-          //     console.log(res.data)
-          //   console.log(res.data.httpSession)
-          //   console.log(res.response)
-          //   // }
-          // })
-          // localStorage.setItem("namezh", res.data.data.role.namezh);
           var arr = []
           var arrs = []
           for (var i in res.data.data.roles) {
@@ -77,16 +49,6 @@ class SignIn extends Component {
           localStorage.setItem("type", arr);
           localStorage.setItem("areaId", res.data.data.areaId);
           localStorage.setItem("currenttime", new Date().getTime());
-          hotellist().then(res => {
-            var arr = []
-            for (var i in res.data.data) {
-              arr.push({
-                'id': i,
-                'value': res.data.data[i]
-              })
-            }
-            localStorage.setItem('sitelist', arr)
-          });
           setTimeout(function () {
             window.location.href = "/app/hotelreport";
           }, 1000);
@@ -99,32 +61,12 @@ class SignIn extends Component {
 
 
   login = () => {
-    console.log(this.state.userID)
-    if (!this.state.userID) {
-      message.error("请输入用户名");
-      return;
-    }
-    if (!this.state.password) {
-      message.error("请输入密码");
-      return;
-    }
     login([
-      this.state.userID,
-      this.state.password
+      "xk",
+      "Tb123456"
     ]).then(res => {
       if (res.data.message === 'success') {
         message.success("登陆成功");
-        hotellist().then(res => {
-          var arr = []
-          for (var i in res.data.data) {
-            arr.push({
-              'id': i,
-              'value': res.data.data[i]
-            })
-          }
-          localStorage.setItem('sitelist', arr)
-        });
-
         var arr = []
         var arrs = []
         for (var i in res.data.data.roles) {
@@ -152,6 +94,7 @@ class SignIn extends Component {
         message.error("用户名或密码错误");
       }
     });
+
   };
 
   render() {
@@ -217,7 +160,7 @@ class SignIn extends Component {
                 </div>
               </div>
               <div className="bombtn">
-                平台服务商：&nbsp;&nbsp;<a href="http://www.terabits.cn/" target="_blank"  rel="noopener noreferrer" style={{ color: '#666666' }}>杭州钛比科技有限公司</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联系电话：&nbsp;&nbsp;0571-87755736
+                平台服务商：&nbsp;&nbsp;<a href="http://www.terabits.cn/" target="_blank" rel="noopener noreferrer" style={{ color: '#666666' }}>杭州钛比科技有限公司</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联系电话：&nbsp;&nbsp;0571-87755736
               </div>
               <div className="bombtns">
                 浙ICP备16003817号-1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网站标识码：3610782
