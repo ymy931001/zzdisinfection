@@ -159,7 +159,7 @@ class SignIn extends Component {
                   </div>
                 </div>
               </div>
-              <div className="bombtn">
+              {/* <div className="bombtn">
                 平台服务商：&nbsp;&nbsp;<a href="http://www.terabits.cn/" target="_blank" rel="noopener noreferrer" style={{ color: '#666666' }}>杭州钛比科技有限公司</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联系电话：&nbsp;&nbsp;0571-87755736
               </div>
               <div className="bombtns">
@@ -168,7 +168,7 @@ class SignIn extends Component {
               <div className="bombtns">
                 <img src={require('./bot.png')} alt="" style={{ width: '20px', marginRight: '10px' }} />
                 <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602007808" target="_blank" rel="noopener noreferrer" style={{ color: '#666666' }}>浙公网安备33010602009975号</a>
-              </div>
+              </div> */}
 
             </div>
           </div>
